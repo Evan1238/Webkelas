@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelas IX C</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* == PENGATURAN DASAR & WARNA == */
+        :root {
+            --primary-color: #7B66FF; /* Ungu lembut */
+            --secondary-color: #FF6B6B; /* Pink */
+            --accent-color: #4DCCBD; /* Teal/Mint */
+            --bg-light: #F4F7F6;
+            --bg-card: #FFFFFF;
+            --text-dark: #333333;
+            --text-light: #777777;
+            --border-radius: 16px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* == HEADER == */
+        .header-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .header-card h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+        .header-card p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* == NAVIGASI TAB == */
+        .tabs-nav {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: transparent;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 10px rgba(123, 102, 255, 0.4);
+        }
+        
+        /* == KONTEN TAB == */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+        }
+
+        /* -- Bagian Ringkasan -- */
+        .summary-grid, .structure-grid, .gallery-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+        .summary-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+        .summary-card, .structure-card {
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+        .summary-card { background: linear-gradient(135deg, var(--accent-color), #86e3ce); color: white; }
+        .summary-card .number { font-size: 3rem; font-weight: 700; }
+        .summary-card .label { font-size: 1rem; font-weight: 500; }
+
+        .structure-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+        .structure-card { background: var(--bg-card); }
+        .structure-card .role {
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            color: white;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        .structure-card .name { font-weight: 600; }
+        .role.ketua { background: var(--secondary-color); }
+        .role.wakil { background: #FFA07A; } /* Light Salmon */
+        .role.sekretaris { background: var(--accent-color); }
+        .role.bendahara { background: #9370DB; } /* Medium Purple */
+
+        /* -- Bagian Jadwal -- */
+        .schedule-table-wrapper {
+            overflow-x: auto;
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 1rem;
+            border: 1px solid var(--bg-light);
+        }
+        .schedule-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        .schedule-table tr:nth-child(even) { background-color: #f9f9f9; }
+
+        /* -- Bagian Galeri -- */
+        .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* -- Fitur Unggulan: Lightbox -- */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 1001;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox.show { display: flex; }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 85%;
+            animation: zoomIn 0.4s ease;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px; right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        @keyframes zoomIn { from { transform: scale(0.5); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header-card">
+            <h1>Kelas IX C</h1>
+            <p>SMP N 1 PADAMARA • Tahun Ajaran 2025/2026</p>
+        </header>
+
+        <nav class="tabs-nav">
+            <button class="tab-btn active" data-tab="ringkasan">Ringkasan</button>
+            <button class="tab-btn" data-tab="jadwal">Jadwal</button>
+            <button class="tab-btn" data-tab="galeri">Galeri</button>
+            <button class="tab-btn" data-tab="lainnya">Lainnya</button>
+        </nav>
+
+        <main>
+            <section id="ringkasan" class="tab-content active">
+                <div class="summary-grid">
+                    <div class="summary-card"><div class="number">32</div><div class="label">Total Siswa</div></div>
+                    <div class="summary-card"><div class="number">15</div><div class="label">Mata Pelajaran</div></div>
+                    <div class="summary-card"><div class="number">5</div><div class="label">Total Pengumuman</div></div>
+                    <div class="summary-card"><div class="number">8</div><div class="label">Total Kegiatan</div></div>
+                </div>
+                <h2 style="margin-top: 2.5rem;">Struktur Kelas</h2>
+                <div class="structure-grid">
+                    <div class="structure-card"><div class="role ketua">Ketua Kelas</div><div class="name">Budi Santoso</div></div>
+                    <div class="structure-card"><div class="role wakil">Wakil Ketua</div><div class="name">Citra Lestari</div></div>
+                    <div class="structure-card"><div class="role sekretaris">Sekretaris 1</div><div class="name">Dian Anggraini</div></div>
+                    <div class="structure-card"><div class="role sekretaris">Sekretaris 2</div><div class="name">Eko Prasetyo</div></div>
+                    <div class="structure-card"><div class="role bendahara">Bendahara 1</div><div class="name">Fitriani Hapsari</div></div>
+                    <div class="structure-card"><div class="role bendahara">Bendahara 2</div><div class="name">Gilang Ramadhan</div></div>
+                </div>
+            </section>
+
+            <section id="jadwal" class="tab-content">
+                <h2>Jadwal Pelajaran</h2>
+                <div class="schedule-table-wrapper">
+                    <table class="schedule-table">
+                        <thead>
+                            <tr><th>Jam</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>07:00 - 08:30</td><td>Matematika</td><td>Fisika</td><td>Kimia</td><td>Biologi</td><td>B. Inggris</td><td>Olahraga</td></tr>
+                            <tr><td>08:30 - 10:00</td><td>B. Indonesia</td><td>Fisika</td><td>Kimia</td><td>Biologi</td><td>Sejarah</td><td>PKn</td></tr>
+                            <tr><td>10:00 - 10:30</td><td colspan="6">Istirahat</td></tr>
+                            <tr><td>10:30 - 12:00</td><td>Agama</td><td>Matematika</td><td>B. Indonesia</td><td>Geografi</td><td>TIK</td><td>Seni Budaya</td></tr>
+                            <tr><td>12:00 - 13:00</td><td colspan="6">Istirahat & Sholat</td></tr>
+                            <tr><td>13:00 - 14:30</td><td>Ekonomi</td><td>Sosiologi</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="galeri" class="tab-content">
+                <h2>Galeri Kelas</h2>
+                <div class="gallery-grid">
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?classroom,students" alt="Kegiatan 1"></div>
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?students,studying" alt="Kegiatan 2"></div>
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?school,event" alt="Kegiatan 3"></div>
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?library,students" alt="Kegiatan 4"></div>
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?teenagers,laughing" alt="Kegiatan 5"></div>
+                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?school,sports" alt="Kegiatan 6"></div>
+                </div>
+            </section>
+
+            <section id="lainnya" class="tab-content">
+                <h2>Info Lainnya</h2>
+                <p>Bagian ini bisa diisi dengan pengumuman, daftar siswa, atau informasi lainnya yang relevan.</p>
+            </section>
+        </main>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <script>
+        // === FUNGSI NAVIGASI TAB ===
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Hapus kelas 'active' dari semua tab dan konten
+                tabs.forEach(item => item.classList.remove('active'));
+                contents.forEach(item => item.classList.remove('active'));
+
+                // Tambahkan kelas 'active' ke tab yang diklik dan konten yang sesuai
+                tab.classList.add('active');
+                const targetContent = document.getElementById(tab.dataset.tab);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            });
+        });
+
+        // === FUNGSI LIGHTBOX GALERI ===
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const galleryImages = document.querySelectorAll('.gallery-item img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        galleryImages.forEach(img => {
+            img.addEventListener('click', () => {
+                lightbox.classList.add('show');
+                lightboxImg.src = img.src;
+            });
+        });
+
+        lightboxClose.addEventListener('click', () => {
+            lightbox.classList.remove('show');
+        });
+
+        // Menutup lightbox saat mengklik area gelap
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
