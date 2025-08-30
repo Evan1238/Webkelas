@@ -338,6 +338,44 @@
     </div>
 
     <script>
+        // === FUNGSI HITUNG MUNDUR (COUNTDOWN) ===
+        const countdownTimer = document.getElementById('countdown-timer');
+        const daysEl = document.getElementById('countdown-days');
+        const hoursEl = document.getElementById('countdown-hours');
+        const minutesEl = document.getElementById('countdown-minutes');
+        const secondsEl = document.getElementById('countdown-seconds');
+
+        // PENTING: Ganti tanggal di bawah ini dengan tanggal acara Anda
+        const tanggalTarget = "December 8, 2025 08:00:00";
+
+        function updateCountdown() {
+            const targetDate = new Date(tanggalTarget).getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownTimer.innerHTML = '<h3 style="color: var(--secondary-color);">Waktunya Telah Tiba! Semangat!</h3>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.innerText = days < 10 ? '0' + days : days;
+            hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+            minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+            secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        if(countdownTimer) {
+          updateCountdown();
+        }
+
+        
         // === FUNGSI NAVIGASI TAB ===
         const tabs = document.querySelectorAll('.tab-btn');
         const contents = document.querySelectorAll('.tab-content');
