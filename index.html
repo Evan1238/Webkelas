@@ -418,17 +418,6 @@
           updateCountdown();
         }
 
-        // === FUNGSI KEAMANAN TAMBAHAN (TIDAK AMAN) ===
-        function handleLogin() {
-            // PENTING: Ganti password di bawah ini
-            const passwordBenar = "kelaskompak";
-            const passwordInput = prompt("Selamat Datang! Silakan masukkan password kelas untuk melanjutkan:");
-
-            if (passwordInput !== passwordBenar) {
-                alert("Password salah! Anda tidak diizinkan masuk.");
-                document.body.innerHTML = '<h1 style="text-align:center; padding-top: 50px;">Akses Ditolak!</h1>';
-            }
-        }
-        handleLogin(); // Langsung panggil fungsi login saat halaman dimuat
+        
 </body>
 </html>
