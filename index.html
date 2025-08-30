@@ -85,6 +85,42 @@
         .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        /* == CSS UNTUK FITUR HITung MUNDUR == */
+        .countdown-wrapper {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2.5rem;
+        }
+        .countdown-wrapper h2 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        #countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .time-box {
+            background: var(--bg-light);
+            padding: 1rem;
+            border-radius: 12px;
+            width: 100px;
+        }
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .time-box small {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
         h2 {
             font-size: 1.8rem;
             margin-bottom: 1.5rem;
@@ -222,6 +258,28 @@
                     <div class="summary-card"><div class="number">0</div><div class="label">Total Pengumuman</div></div>
                     <div class="summary-card"><div class="number">0</div><div class="label">Total Kegiatan</div></div>
                 </div>
+
+                <div class="countdown-wrapper">
+                    <h2>Hitung Mundur Menuju Ujian Sekolah</h2>
+                    <div id="countdown-timer">
+                        <div class="time-box">
+                            <span id="countdown-days">00</span>
+                            <small>Hari</small>
+                        </div>
+                        <div class="time-box">
+                            <span id="countdown-hours">00</span>
+                            <small>Jam</small>
+                        </div>
+                        <div class="time-box">
+                            <span id="countdown-minutes">00</span>
+                            <small>Menit</small>
+                        </div>
+                        <div class="time-box">
+                            <span id="countdown-seconds">00</span>
+                            <small>Detik</small>
+                        </div>
+                    </div>
+                </div>
                 <h2 style="margin-top: 2.5rem;">Struktur Kelas</h2>
                 <div class="structure-grid">
                     <div class="structure-card"><div class="role ketua">Ketua Kelas</div><div class="name">Alif Fatan M</div></div>
@@ -323,5 +381,54 @@
             }
         });
     </script>
+    // === FUNGSI HITUNG MUNDUR (COUNTDOWN) ===
+        const countdownTimer = document.getElementById('countdown-timer');
+        const daysEl = document.getElementById('countdown-days');
+        const hoursEl = document.getElementById('countdown-hours');
+        const minutesEl = document.getElementById('countdown-minutes');
+        const secondsEl = document.getElementById('countdown-seconds');
+
+        // PENTING: Ganti tanggal di bawah ini dengan tanggal acara Anda
+        const tanggalTarget = "December 8, 2025 08:00:00";
+
+        function updateCountdown() {
+            const targetDate = new Date(tanggalTarget).getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownTimer.innerHTML = '<h3 style="color: var(--secondary-color);">Waktunya Telah Tiba! Semangat!</h3>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            daysEl.innerText = days < 10 ? '0' + days : days;
+            hoursEl.innerText = hours < 10 ? '0' + hours : hours;
+            minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
+            secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
+        }
+
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        if(countdownTimer) {
+          updateCountdown();
+        }
+
+        // === FUNGSI KEAMANAN TAMBAHAN (TIDAK AMAN) ===
+        function handleLogin() {
+            // PENTING: Ganti password di bawah ini
+            const passwordBenar = "kelaskompak";
+            const passwordInput = prompt("Selamat Datang! Silakan masukkan password kelas untuk melanjutkan:");
+
+            if (passwordInput !== passwordBenar) {
+                alert("Password salah! Anda tidak diizinkan masuk.");
+                document.body.innerHTML = '<h1 style="text-align:center; padding-top: 50px;">Akses Ditolak!</h1>';
+            }
+        }
+        handleLogin(); // Langsung panggil fungsi login saat halaman dimuat
 </body>
 </html>
