@@ -264,6 +264,28 @@
             background-color: #34495e; /* Warna abu-abu gelap yang elegan */
             color: var(--bg-light); /* Menggunakan warna teks terang dari variabel Anda */
             }
+        /* == PEMUTAR MUSIK LATAR == */
+        #music-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            border: none;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        #music-toggle-btn:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
@@ -430,6 +452,12 @@
     </div>
     <footer>
         <p>&copy; 2025 Kelas IX C | Dibuat dengan semangat kebersamaan.</p>
+        
+        <audio id="background-music" src="AhaTik_original sound - BanguizJason5_1756613640566.mp3" loop></audio>
+    <button id="music-toggle-btn" title="Putar Musik">
+        <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+    </button>
     </footer>
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">&times;</span>
@@ -437,6 +465,26 @@
     </div>
 
     <script>
+        // === FUNGSI PEMUTAR MUSIK LATAR ===
+        const music = document.getElementById('background-music');
+        const musicBtn = document.getElementById('music-toggle-btn');
+        const iconPlay = document.getElementById('icon-play');
+        const iconPause = document.getElementById('icon-pause');
+
+        musicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play();
+                iconPlay.style.display = 'none';
+                iconPause.style.display = 'block';
+                musicBtn.title = "Jeda Musik";
+            } else {
+                music.pause();
+                iconPlay.style.display = 'block';
+                iconPause.style.display = 'none';
+                musicBtn.title = "Putar Musik";
+            }
+        });
+        
         // === FUNGSI HITUNG MUNDUR (COUNTDOWN) ===
         const countdownTimer = document.getElementById('countdown-timer');
         const daysEl = document.getElementById('countdown-days');
