@@ -183,6 +183,36 @@
         }
         .schedule-table tr:nth-child(even) { background-color: #f9f9f9; }
 
+        /* -- Bagian Jadwal Piket -- */
+        .piket-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .piket-card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        .piket-card h3 {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .piket-card ul {
+            list-style: none; /* Menghilangkan bulatan/angka */
+            padding-left: 0;
+        }
+        .piket-card li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .piket-card li:last-child {
+            border-bottom: none;
+        }
+
         /* -- Bagian Galeri -- */
         .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
         .gallery-item img {
@@ -260,7 +290,7 @@
                 </div>
 
                 <div class="countdown-wrapper">
-                    <h2>Hitung Mundur Menuju Tahun Baru</h2>
+                    <h2>Hitung Mundur Menuju Tahun Baru 2026</h2>
                     <div id="countdown-timer">
                         <div class="time-box">
                             <span id="countdown-days">00</span>
@@ -310,6 +340,70 @@
                         </tbody>
                     </table>
                 </div>
+
+                <h2 style="margin-top: 3rem;">Jadwal Piket Kelas</h2>
+                <div class="piket-grid">
+                    <div class="piket-card">
+                        <h3>Senin</h3>
+                        <ul>
+                            <li>Alif Fatan M</li>
+                            <li>Ihda Aufa A</li>
+                            <li>Zahra Dinda</li>
+                            <li>Alya Nabila</li>
+                            <li>Mutia Rahmatul F</li>
+                        </ul>
+                    </div>
+                    <div class="piket-card">
+                        <h3>Selasa</h3>
+                        <ul>
+                            <li>Sofie Anastiti</li>
+                            <li>Nama Siswa 7</li>
+                            <li>Nama Siswa 8</li>
+                            <li>Nama Siswa 9</li>
+                            <li>Nama Siswa 10</li>
+                        </ul>
+                    </div>
+                    <div class="piket-card">
+                        <h3>Rabu</h3>
+                        <ul>
+                            <li>Nama Siswa 11</li>
+                            <li>Nama Siswa 12</li>
+                            <li>Nama Siswa 13</li>
+                            <li>Nama Siswa 14</li>
+                            <li>Nama Siswa 15</li>
+                        </ul>
+                    </div>
+                    <div class="piket-card">
+                        <h3>Kamis</h3>
+                        <ul>
+                            <li>Nama Siswa 16</li>
+                            <li>Nama Siswa 17</li>
+                            <li>Nama Siswa 18</li>
+                            <li>Nama Siswa 19</li>
+                            <li>Nama Siswa 20</li>
+                        </ul>
+                    </div>
+                    <div class="piket-card">
+                        <h3>Jumat</h3>
+                        <ul>
+                            <li>Nama Siswa 21</li>
+                            <li>Nama Siswa 22</li>
+                            <li>Nama Siswa 23</li>
+                            <li>Nama Siswa 24</li>
+                            <li>Nama Siswa 25</li>
+                        </ul>
+                    </div>
+                    <div class="piket-card">
+                        <h3>Sabtu</h3>
+                        <ul>
+                            <li>Nama Siswa 26</li>
+                            <li>Nama Siswa 27</li>
+                            <li>Nama Siswa 28</li>
+                            <li>Nama Siswa 29</li>
+                            <li>Nama Siswa 30</li>
+                        </ul>
+                    </div>
+                </div>
             </section>
 
             <section id="galeri" class="tab-content">
@@ -329,7 +423,8 @@
                 <p>Bagian ini bisa diisi dengan pengumuman, daftar siswa, atau informasi lainnya yang relevan.</p>
             </section>
         </main>
-    </div>  <footer>
+    </div>
+    <footer>
         <p>&copy; 2025 Kelas IX C | Dibuat dengan semangat kebersamaan.</p>
     </footer>
     <div id="lightbox" class="lightbox">
@@ -355,7 +450,7 @@
 
             if (distance < 0) {
                 clearInterval(countdownInterval);
-                countdownTimer.innerHTML = '<h3 style="color: var(--secondary-color);">Waktunya Telah Tiba! Semangat!</h3>';
+                countdownTimer.innerHTML = '<h3 style="color: var(--secondary-color);">Selamat Tahun Baru!</h3>';
                 return;
             }
 
@@ -405,7 +500,8 @@
             img.addEventListener('click', () => {
                 lightbox.classList.add('show');
                 lightboxImg.src = img.src;
-            });
+           
+ });
         });
 
         lightboxClose.addEventListener('click', () => {
@@ -419,5 +515,5 @@
             }
         });
     </script>
-        </body>
-             </html>
+</body>
+    </html>
