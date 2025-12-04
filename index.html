@@ -3,569 +3,529 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kelas IX C</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Panduan Ectomorph Remaja: Misi 30kg ke 40kg</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        /* == PENGATURAN DASAR & WARNA == */
-        :root {
-            --primary-color: #7B66FF; /* Ungu lembut */
-            --secondary-color: #FF6B6B; /* Pink */
-            --accent-color: #4DCCBD; /* Teal/Mint */
-            --bg-light: #F4F7F6;
-            --bg-card: #FFFFFF;
-            --text-dark: #333333;
-            --text-light: #777777;
-            --border-radius: 16px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* == HEADER == */
-        .header-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .header-card h1 {
-            color: var(--primary-color);
-            font-size: 2.5rem;
-        }
-        .header-card p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-        }
-
-        /* == NAVIGASI TAB == */
-        .tabs-nav {
-            display: flex;
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 0.5rem;
-            margin-bottom: 2rem;
-            overflow-x: auto;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 1rem;
-            border: none;
-            background: transparent;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-        .tab-btn.active {
-            background-color: var(--primary-color);
-            color: white;
-            box-shadow: 0 2px 10px rgba(123, 102, 255, 0.4);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
-        /* == KONTEN TAB == */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* == CSS UNTUK FITUR HITung MUNDUR == */
-        .countdown-wrapper {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 2.5rem;
-        }
-        .countdown-wrapper h2 {
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-        #countdown-timer {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-        }
-        .time-box {
-            background: var(--bg-light);
-            padding: 1rem;
-            border-radius: 12px;
-            width: 100px;
-        }
-        .time-box span {
-            display: block;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .time-box small {
-            font-size: 0.9rem;
-            color: var(--text-light);
-        }
-        h2 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-dark);
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF7; /* Warm neutral background */
+            color: #1F2937;
         }
 
-        /* -- Bagian Ringkasan -- */
-        .summary-grid, .structure-grid, .gallery-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-        .summary-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-        .summary-card, .structure-card {
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            text-align: center;
-            box-shadow: var(--shadow);
-        }
-        .summary-card { background: linear-gradient(135deg, var(--accent-color), #86e3ce); color: white; }
-        .summary-card .number { font-size: 3rem; font-weight: 700; }
-        .summary-card .label { font-size: 1rem; font-weight: 500; }
-
-        .structure-grid { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-        .structure-card { background: var(--bg-card); }
-        .structure-card .role {
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            color: white;
-            margin-bottom: 1rem;
-            display: inline-block;
-        }
-        .structure-card .name { font-weight: 600; }
-        .role.ketua { background: var(--secondary-color); }
-        .role.wakil { background: #FFA07A; } /* Light Salmon */
-        .role.sekretaris { background: var(--accent-color); }
-        .role.bendahara { background: #9370DB; } /* Medium Purple */
-
-        /* -- Bagian Jadwal -- */
-        .schedule-table-wrapper {
-            overflow-x: auto;
-            background: var(--bg-card);
-            padding: 1rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-        }
-        .schedule-table {
+        .chart-container {
+            position: relative;
             width: 100%;
-            border-collapse: collapse;
-            text-align: center;
-        }
-        .schedule-table th, .schedule-table td {
-            padding: 1rem;
-            border: 1px solid var(--bg-light);
-        }
-        .schedule-table th {
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-        }
-        .schedule-table tr:nth-child(even) { background-color: #f9f9f9; }
-
-        /* -- Bagian Jadwal Piket -- */
-        .piket-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-        .piket-card {
-            background: var(--bg-card);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-        }
-        .piket-card h3 {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--bg-light);
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-        }
-        .piket-card ul {
-            list-style: none; /* Menghilangkan bulatan/angka */
-            padding-left: 0;
-        }
-        .piket-card li {
-            padding: 0.5rem 0;
-            border-bottom: 1px dashed #eee;
-        }
-        .piket-card li:last-child {
-            border-bottom: none;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
         }
 
-        /* -- Bagian Galeri -- */
-        .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        .gallery-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .gallery-item img:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        /* -- Fitur Unggulan: Lightbox -- */
-        .lightbox {
-            display: none;
-            position: fixed;
-            z-index: 1001;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-        }
-        .lightbox.show { display: flex; }
-        .lightbox-content {
-            max-width: 90%;
-            max-height: 85%;
-            animation: zoomIn 0.4s ease;
-        }
-        .lightbox-close {
-            position: absolute;
-            top: 20px; right: 30px;
-            color: white;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        @keyframes zoomIn { from { transform: scale(0.5); } to { transform: scale(1); } }
-
-        /* == FOOTER / COPYRIGHT == */
-        footer {
-            text-align: center;
-            padding: 1.5rem 2rem;
-            margin-top: 2rem;
-            background-color: #34495e; /* Warna abu-abu gelap yang elegan */
-            color: var(--bg-light); /* Menggunakan warna teks terang dari variabel Anda */
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
             }
-        /* == PEMUTAR MUSIK LATAR == */
-        #music-toggle-btn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            border: none;
-            box-shadow: var(--shadow);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease;
-            z-index: 1000;
         }
-        #music-toggle-btn:hover {
-            transform: scale(1.1);
+
+        /* Custom Scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
+    <!-- Chosen Palette: Warm Neutrals (Background: #FDFBF7) with Slate Text (#1F2937) and Accents of Energetic Orange (#F97316) and Calming Blue (#3B82F6). Minimalistic and supportive. -->
+    <!-- Application Structure Plan: 
+         1. Hero Section: Motivating intro setting the goal (30kg -> 40kg).
+         2. Prinsip Dasar Dashboard: 4 key cards explaining the "laws" of ectomorph growth.
+         3. Jadwal Interaktif: A weekly view toggler to show the balance between Rest and Workout.
+         4. Zona Latihan (Workout Hub): Tabbed interface for Plan A vs Plan B, with expandable details for execution technique (crucial for safety).
+         5. Strategi Nutrisi: Visual breakdown of the "Budget Diet" and a conceptual Pie Chart showing the ideal plate composition.
+         6. Safety Checklist: Interactive list to ensure user readiness before starting.
+         Rationale: This structure breaks down the dense text into actionable, bite-sized sections. The "Weekly View" helps visualize the "Rest = Growth" concept. The chart reinforces the nutrition balance without overwhelming with numbers.
+    -->
+    <!-- Visualization & Content Choices:
+         1. Bar Chart (Energy Mgmt): Shows Intensity vs Rest days to visualize the "Hemat Energi" principle. Goal: Inform/Compare.
+         2. Pie Chart (Nutrition): Shows the "Cheap Bulking Plate" composition (Carbs vs Protein vs Veggies). Goal: Inform/Relationships.
+         3. Interactive Cards (Exercises): Click to expand details. Goal: Inform/Instruct. Text-based to avoid complex diagrams/SVGs, focusing on the "Tempo" description.
+         4. JS Toggles: Used for schedule and workout plans to keep the interface clean and reduce cognitive load.
+         5. Confirmation: NO SVG graphics used. NO Mermaid JS used. Chart.js used for visualizations.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 </head>
-<body>
-    <div class="container">
-        <header class="header-card">
-            <h1>Kelas IX C</h1>
-            <p>SMP N 1 PADAMARA • Tahun Ajaran 2025/2026</p>
-        </header>
+<body class="antialiased">
 
-        <nav class="tabs-nav">
-            <button class="tab-btn active" data-tab="ringkasan">Ringkasan</button>
-            <button class="tab-btn" data-tab="jadwal">Jadwal</button>
-            <button class="tab-btn" data-tab="galeri">Galeri</button>
-            <button class="tab-btn" data-tab="lainnya">Lainnya</button>
-        </nav>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-orange-600">Ecto<span class="text-gray-800">Guide</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#prinsip" class="text-gray-600 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium">Prinsip</a>
+                    <a href="#jadwal" class="text-gray-600 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium">Jadwal</a>
+                    <a href="#latihan" class="text-gray-600 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium">Latihan</a>
+                    <a href="#nutrisi" class="text-gray-600 hover:text-orange-600 px-3 py-2 rounded-md text-sm font-medium">Nutrisi</a>
+                </div>
+                <!-- Mobile menu button (functional via simple JS if needed, but keeping simple layout for SPA) -->
+                <div class="flex md:hidden items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-orange-600 focus:outline-none">
+                        <span class="text-2xl">☰</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100">
+            <a href="#prinsip" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Prinsip</a>
+            <a href="#jadwal" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Jadwal</a>
+            <a href="#latihan" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Latihan</a>
+            <a href="#nutrisi" class="block px-4 py-2 text-gray-600 hover:bg-gray-50">Nutrisi</a>
+        </div>
+    </nav>
 
-        <main>
-            <section id="ringkasan" class="tab-content active">
-                <div class="summary-grid">
-                    <div class="summary-card"><div class="number">32</div><div class="label">Total Siswa</div></div>
-                    <div class="summary-card"><div class="number">11</div><div class="label">Mata Pelajaran</div></div>
-                    <div class="summary-card"><div class="number">0</div><div class="label">Total Pengumuman</div></div>
-                    <div class="summary-card"><div class="number">0</div><div class="label">Total Kegiatan</div></div>
+    <!-- Hero Section -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+                Misi: 30kg <span class="text-orange-600">&rarr;</span> 40kg
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                Panduan lengkap, aman, dan hemat biaya untuk tipe tubuh <strong>Ectomorph</strong> (kurus). 
+                Fokus pada teknik <em>tempo lambat</em> dengan beban ringan (3kg).
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="#latihan" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-orange-600 hover:bg-orange-700">
+                    Mulai Latihan
+                </a>
+                <a href="#nutrisi" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-orange-600 bg-orange-100 hover:bg-orange-200">
+                    Cek Menu Makan
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Section 1: Prinsip Dasar (The Laws) -->
+        <section id="prinsip" class="py-12 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-base text-orange-600 font-semibold tracking-wide uppercase">Hukum Wajib</h2>
+                    <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        4 Pilar Pertumbuhan Ectomorph
+                    </p>
+                    <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                        Sebelum mengangkat beban, pahami aturan main ini agar usahamu tidak sia-sia. Ectomorph tidak boleh asal latihan!
+                    </p>
                 </div>
 
-                <div class="countdown-wrapper">
-                    <h2>Hitung Mundur Menuju Tahun Baru 2026</h2>
-                    <div id="countdown-timer">
-                        <div class="time-box">
-                            <span id="countdown-days">00</span>
-                            <small>Hari</small>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-blue-500 card-hover transition duration-300">
+                        <div class="text-4xl mb-4">🔋</div>
+                        <h3 class="text-lg font-bold text-gray-900">Hemat Energi</h3>
+                        <p class="mt-2 text-gray-600 text-sm">
+                            Dilarang kardio berlebih (lari jauh, bola berjam-jam). Kalorimu sangat berharga untuk membangun otot, jangan dibuang percuma.
+                        </p>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-green-500 card-hover transition duration-300">
+                        <div class="text-4xl mb-4">🍲</div>
+                        <h3 class="text-lg font-bold text-gray-900">Surplus Kalori</h3>
+                        <p class="mt-2 text-gray-600 text-sm">
+                            Makan LEBIH dari yang dibakar. Pilih makanan bersih & matang (karena riwayat tipes). Makan porsi sedang tapi <strong>sering</strong>.
+                        </p>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-purple-500 card-hover transition duration-300">
+                        <div class="text-4xl mb-4">⏱️</div>
+                        <h3 class="text-lg font-bold text-gray-900">Tempo Pelan</h3>
+                        <p class="mt-2 text-gray-600 text-sm">
+                            Karena beban cuma 3kg, bikin susah dengan gerakan lambat: <strong>Angkat 1 detik, Turun 3-4 detik</strong>. Rasakan panasnya!
+                        </p>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border-t-4 border-red-500 card-hover transition duration-300">
+                        <div class="text-4xl mb-4">🛌</div>
+                        <h3 class="text-lg font-bold text-gray-900">Istirahat = Tumbuh</h3>
+                        <p class="mt-2 text-gray-600 text-sm">
+                            Otot TIDAK tumbuh saat latihan, tapi saat tidur. Tidur 8 jam adalah harga mati untuk perbaikan jaringan otot.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Jadwal Mingguan (Weekly Schedule) -->
+        <section id="jadwal" class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-3 lg:gap-8 items-center">
+                    <div class="col-span-1 mb-8 lg:mb-0">
+                        <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Manajemen Energi Mingguan</h2>
+                        <p class="text-gray-500 mb-6">
+                            Grafik ini menunjukkan perbandingan hari latihan keras vs hari istirahat total. Lihatlah betapa pentingnya hari istirahat untuk pemulihan tubuhmu.
+                        </p>
+                        <div class="chart-container bg-white p-2 rounded-lg border border-gray-100 shadow-inner">
+                            <canvas id="scheduleChart"></canvas>
                         </div>
-                        <div class="time-box">
-                            <span id="countdown-hours">00</span>
-                            <small>Jam</small>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="bg-orange-50 rounded-xl p-6 border border-orange-100">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Jadwal Aktifitas (Klik hari untuk detail)</h3>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="schedule-buttons">
+                                <!-- Generated by JS -->
+                            </div>
+                            <div id="daily-detail" class="mt-6 bg-white p-6 rounded-lg shadow-sm min-h-[150px] transition-all duration-300">
+                                <h4 class="text-lg font-bold text-orange-600" id="detail-day">Senin</h4>
+                                <p class="text-gray-700 font-medium mt-1" id="detail-activity">Latihan A (Full Body)</p>
+                                <p class="text-gray-500 text-sm mt-2" id="detail-desc">Fokus utama latihan minggu ini. Pastikan makan 2 jam sebelum mulai.</p>
+                            </div>
                         </div>
-                        <div class="time-box">
-                            <span id="countdown-minutes">00</span>
-                            <small>Menit</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Zona Latihan (Workout Hub) -->
+        <section id="latihan" class="py-12 bg-gray-50">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-extrabold text-gray-900">Zona Latihan</h2>
+                    <p class="mt-4 text-gray-500">
+                        Gunakan dumbbell 3kg. Ingat kuncinya: <strong>Teknik yang benar > Beban berat</strong>.
+                    </p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex justify-center mb-8">
+                    <div class="bg-white p-1 rounded-lg shadow-sm border border-gray-200 inline-flex">
+                        <button onclick="switchPlan('A')" id="btn-plan-a" class="px-6 py-2 rounded-md text-sm font-medium bg-orange-600 text-white shadow-sm transition-colors">Menu A (Utama)</button>
+                        <button onclick="switchPlan('B')" id="btn-plan-b" class="px-6 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">Menu B (Variasi)</button>
+                    </div>
+                </div>
+
+                <!-- Plan Content -->
+                <div id="workout-content" class="space-y-4">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="mt-8 bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-lg">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <span class="text-blue-500 text-xl">ℹ️</span>
                         </div>
-                        <div class="time-box">
-                            <span id="countdown-seconds">00</span>
-                            <small>Detik</small>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                <strong>Tips Progressive Overload:</strong> Karena berat barbel tetap 3kg, jika latihan terasa mudah, perlambat gerakan turun menjadi 5 detik atau kurangi istirahat antar set menjadi 45 detik.
+                            </p>
                         </div>
                     </div>
                 </div>
-                <h2 style="margin-top: 2.5rem;">Struktur Kelas</h2>
-                <div class="structure-grid">
-                    <div class="structure-card" style="grid-column: 1 / -1; background: #e8e4ff;">
-                        <div class="role" style="background: var(--primary-color);">Wali Kelas</div>
-                        <div class="name">Slamet D.R, S.Pd.</div>
-                    </div>
-                    <div class="structure-card"><div class="role ketua">Ketua Kelas</div><div class="name">Alif Fatan M</div></div>
-                    <div class="structure-card"><div class="role wakil">Wakil Ketua</div><div class="name">Ihda Aufa A</div></div>
-                    <div class="structure-card"><div class="role sekretaris">Sekretaris 1</div><div class="name">Zahra Dinda F.K</div></div>
-                    <div class="structure-card"><div class="role sekretaris">Sekretaris 2</div><div class="name">Alya Nabila Z.F</div></div>
-                    <div class="structure-card"><div class="role bendahara">Bendahara 1</div><div class="name">Mutia Rahmatul F</div></div>
-                    <div class="structure-card"><div class="role bendahara">Bendahara 2</div><div class="name">Sofie Anastiti</div></div>
-                </div>
-            </section>
+            </div>
+        </section>
 
-            <section id="jadwal" class="tab-content">
-                <h2>Jadwal Pelajaran</h2>
-                <div class="schedule-table-wrapper">
-                    <table class="schedule-table">
-                        <thead>
-                            <tr><th>Jam</th><th>Senin</th><th>Selasa</th><th>Rabu</th><th>Kamis</th><th>Jumat</th><th>Sabtu</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>1</td><td>Upacara</td><td>Ppkn</td><td>Seni Musik</td><td>Pai</td><td>Pembiasaan</td><td>Ipa</td></tr>
-                            <tr><td>2</td><td>Matematika</td><td>Ppkn</td><td>Seni Musik</td><td>Pai</td><td>Bk</td><td>Ipa</td></tr>
-                            <tr><td>3</td><td>Matematika</td><td>Ppkn</td><td>Seni Musik</td><td>Pai</td><td>Informatika</td><td>B.Inggris</td></tr>
-                            <tr><td>4</td><td>Matematika</td><td>Matematika</td><td>Ips</td><td>Pjok</td><td>Informatika</td><td>B.Inggris</td></tr>
-                            <tr><td>5</td><td>B.Jawa</td><td>Matematika</td><td>Ips</td><td>Pjok</td><td>Informatika</td><td>B.Indonesia</td></tr>
-                            <tr><td>6</td><td>B.Jawa</td><td>Ipa</td><td>B.Indonesia</td><td>Pjok</td><td>-</td><td>B.Indonesia</td></tr>
-                            <tr><td>7</td><td>Ips</td><td>Ipa</td><td>B.Indonesia</td><td>B.Inggris</td><td>-</td><td>B.Indonesia</td></tr>
-                            <tr><td>8</td><td>Ips</td><td>Ipa</td><td>B.Indonesia</td><td>B.Inggris</td><td>-</td><td>-</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- Section 4: Strategi Nutrisi -->
+        <section id="nutrisi" class="py-12 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-start">
+                    
+                    <!-- Content Left -->
+                    <div>
+                        <h2 class="text-3xl font-extrabold text-gray-900 mb-6">Strategi Makan Hemat (Bulking)</h2>
+                        <p class="text-gray-600 mb-6">
+                            Anak sekolah dengan uang terbatas? Fokus pada <strong>Karbohidrat</strong> dan <strong>Protein Nabati</strong>. Kamu butuh bahan bakar yang bersih dan murah.
+                        </p>
+                        
+                        <div class="space-y-6">
+                            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                                <h4 class="font-bold text-yellow-800 mb-2">💡 Tips Hemat</h4>
+                                <ul class="list-disc list-inside text-sm text-yellow-800 space-y-1">
+                                    <li><strong>Minum Kalori:</strong> Mengunyah itu capek. Minum susu atau jus alpukat lebih mudah masuk.</li>
+                                    <li><strong>Double Carbs:</strong> Mie instan boleh ASAL tambah Telur & Sayur (jangan sering-sering).</li>
+                                    <li><strong>Kacang Hijau:</strong> Santannya mengandung lemak bagus untuk naik berat badan.</li>
+                                </ul>
+                            </div>
 
-                <h2 style="margin-top: 3rem;">Jadwal Piket Kelas</h2>
-                <div class="piket-grid">
-                    <div class="piket-card">
-                        <h3>Senin</h3>
-                        <ul>
-                            <li>Alif Fatan M</li>
-                            <li>Ihda Aufa A</li>
-                            <li>Zahra Dinda</li>
-                            <li>Alya Nabila</li>
-                            <li>Mutia Rahmatul F</li>
-                        </ul>
+                            <!-- Meal Timeline -->
+                            <div class="relative pl-8 border-l-2 border-orange-200 space-y-6">
+                                <div class="relative">
+                                    <span class="absolute -left-[41px] bg-orange-100 text-orange-600 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-2 border-white">06</span>
+                                    <h5 class="text-lg font-bold text-gray-900">Sarapan (Wajib!)</h5>
+                                    <p class="text-gray-600 text-sm">Nasi Uduk/Kuning + Telur Dadar + Tempe. Minyak gorengan bersih itu kalori bagus.</p>
+                                </div>
+                                <div class="relative">
+                                    <span class="absolute -left-[41px] bg-orange-100 text-orange-600 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-2 border-white">09</span>
+                                    <h5 class="text-lg font-bold text-gray-900">Bekal Sekolah</h5>
+                                    <p class="text-gray-600 text-sm">Roti tawar oles selai kacang tebal atau Lontong isi/Arem-arem.</p>
+                                </div>
+                                <div class="relative">
+                                    <span class="absolute -left-[41px] bg-orange-100 text-orange-600 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-2 border-white">14</span>
+                                    <h5 class="text-lg font-bold text-gray-900">Makan Siang</h5>
+                                    <p class="text-gray-600 text-sm">Nasi Porsi Besar + Tahu/Tempe + Sayur Bening (bayam/kelor bagus untuk usus).</p>
+                                </div>
+                                <div class="relative">
+                                    <span class="absolute -left-[41px] bg-orange-100 text-orange-600 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-2 border-white">18</span>
+                                    <h5 class="text-lg font-bold text-gray-900">Makan Malam</h5>
+                                    <p class="text-gray-600 text-sm">Nasi + <strong>2 Butir Telur Rebus</strong> (Protein termurah & terbaik).</p>
+                                </div>
+                                <div class="relative">
+                                    <span class="absolute -left-[41px] bg-orange-100 text-orange-600 rounded-full w-8 h-8 flex items-center justify-center text-xs font-bold border-2 border-white">21</span>
+                                    <h5 class="text-lg font-bold text-gray-900">Sebelum Tidur</h5>
+                                    <p class="text-gray-600 text-sm">Segelas Susu (Full Cream/Kedelai). Hindari susu kental manis (cuma gula).</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="piket-card">
-                        <h3>Selasa</h3>
-                        <ul>
-                            <li>Sofie Anastiti</li>
-                            <li>Nama Siswa 7</li>
-                            <li>Nama Siswa 8</li>
-                            <li>Nama Siswa 9</li>
-                            <li>Nama Siswa 10</li>
-                        </ul>
-                    </div>
-                    <div class="piket-card">
-                        <h3>Rabu</h3>
-                        <ul>
-                            <li>Nama Siswa 11</li>
-                            <li>Nama Siswa 12</li>
-                            <li>Nama Siswa 13</li>
-                            <li>Nama Siswa 14</li>
-                            <li>Nama Siswa 15</li>
-                        </ul>
-                    </div>
-                    <div class="piket-card">
-                        <h3>Kamis</h3>
-                        <ul>
-                            <li>Nama Siswa 16</li>
-                            <li>Nama Siswa 17</li>
-                            <li>Nama Siswa 18</li>
-                            <li>Nama Siswa 19</li>
-                            <li>Nama Siswa 20</li>
-                        </ul>
-                    </div>
-                    <div class="piket-card">
-                        <h3>Jumat</h3>
-                        <ul>
-                            <li>Nama Siswa 21</li>
-                            <li>Nama Siswa 22</li>
-                            <li>Nama Siswa 23</li>
-                            <li>Nama Siswa 24</li>
-                            <li>Nama Siswa 25</li>
-                        </ul>
-                    </div>
-                    <div class="piket-card">
-                        <h3>Sabtu</h3>
-                        <ul>
-                            <li>Nama Siswa 26</li>
-                            <li>Nama Siswa 27</li>
-                            <li>Nama Siswa 28</li>
-                            <li>Nama Siswa 29</li>
-                            <li>Nama Siswa 30</li>
-                        </ul>
-                    </div>
-                </div>
-            </section>
 
-            <section id="galeri" class="tab-content">
-                <h2>Galeri Kelas</h2>
-                <div class="gallery-grid">
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?classroom,students" alt="Kegiatan 1"></div>
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?students,studying" alt="Kegiatan 2"></div>
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?school,event" alt="Kegiatan 3"></div>
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?library,students" alt="Kegiatan 4"></div>
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?teenagers,laughing" alt="Kegiatan 5"></div>
-                    <div class="gallery-item"><img src="https://source.unsplash.com/500x500/?school,sports" alt="Kegiatan 6"></div>
-                </div>
-            </section>
+                    <!-- Chart Right -->
+                    <div class="mt-10 lg:mt-0 sticky top-24">
+                        <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-900 mb-4 text-center">Komposisi Piring Ideal</h3>
+                            <div class="chart-container">
+                                <canvas id="nutritionChart"></canvas>
+                            </div>
+                            <p class="text-xs text-center text-gray-400 mt-4">
+                                *Proporsi perkiraan untuk Ectomorph. Fokus terbanyak pada Karbohidrat untuk energi.
+                            </p>
+                        </div>
+                        
+                        <!-- Safety Checklist -->
+                        <div class="mt-8 bg-red-50 p-6 rounded-xl border border-red-100">
+                            <h3 class="text-lg font-bold text-red-700 mb-3">⚠️ Checklist Keselamatan</h3>
+                            <div class="space-y-2">
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+                                    <span class="text-gray-700 text-sm">Stop jika pusing (Anemia/Darah Rendah)</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+                                    <span class="text-gray-700 text-sm">Sudah pemanasan 5 menit (putar lengan, jalan)</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+                                    <span class="text-gray-700 text-sm">Teknik > Berat (Jaga punggung lurus)</span>
+                                </label>
+                                <label class="flex items-center space-x-3">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-red-600 rounded border-gray-300 focus:ring-red-500">
+                                    <span class="text-gray-700 text-sm">Pendinginan setelah latihan</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
-            <section id="lainnya" class="tab-content">
-                <h2>Info Lainnya</h2>
-                <p>Website Ini Masih Dalam Tahap Pengembangan,Jika Terdapat Bug Atau Kesalahan Lapor Di po7097769@gmail.com!.</p>
-            </section>
-        </main>
-    </div>
-    <footer>
-        <p>&copy; 2025 Kelas IX C | Dibuat dengan semangat kebersamaan.</p>
-        
-        <audio id="background-music" src="AhaTik_original sound - BanguizJason5_1756613640566.mp3" loop></audio>
-    <button id="music-toggle-btn" title="Putar Musik">
-        <svg id="icon-play" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="icon-pause" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-400 text-sm">Semangat! Perjalanan dari 30kg memang berat, tapi kamu pasti bisa. Konsistensi kuncinya.</p>
+            <p class="text-gray-600 text-xs mt-2">&copy; 2023 Ectomorph Guide.</p>
+        </div>
     </footer>
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img class="lightbox-content" id="lightbox-img">
-    </div>
 
+    <!-- JavaScript Implementation -->
     <script>
-        // === FUNGSI PEMUTAR MUSIK LATAR ===
-        const music = document.getElementById('background-music');
-        const musicBtn = document.getElementById('music-toggle-btn');
-        const iconPlay = document.getElementById('icon-play');
-        const iconPause = document.getElementById('icon-pause');
+        // --- Data Storage ---
+        const scheduleData = {
+            'Senin': { type: 'Latihan', activity: 'Latihan A (Fokus Utama)', desc: 'Squat, Press, Row. Makan besar sesudahnya!', intensity: 80 },
+            'Selasa': { type: 'Istirahat', activity: 'Istirahat Total', desc: 'Fokus makan banyak. Otot tumbuh hari ini.', intensity: 10 },
+            'Rabu': { type: 'Latihan', activity: 'Latihan B (Variasi)', desc: 'Lunges, Push Up, Deadlift. Teknik pelan.', intensity: 70 },
+            'Kamis': { type: 'Istirahat', activity: 'Istirahat Total', desc: 'Simpan energimu. Jangan main bola/lari jauh.', intensity: 10 },
+            'Jumat': { type: 'Latihan', activity: 'Latihan A (Fokus Utama)', desc: 'Ulangi menu Senin. Coba tambah repetisi jika kuat.', intensity: 80 },
+            'Sabtu': { type: 'Istirahat', activity: 'Istirahat Aktif', desc: 'Jalan santai boleh, tapi jangan capek-capek.', intensity: 30 },
+            'Minggu': { type: 'Istirahat', activity: 'Istirahat Total', desc: 'Persiapan untuk minggu depan. Tidur siang.', intensity: 10 }
+        };
 
-        musicBtn.addEventListener('click', () => {
-            if (music.paused) {
-                music.play();
-                iconPlay.style.display = 'none';
-                iconPause.style.display = 'block';
-                musicBtn.title = "Jeda Musik";
+        const workoutPlans = {
+            'A': [
+                { name: 'Goblet Squat', target: 'Paha & Bokong', sets: '3 set x 12-15 reps', tips: 'Pegang 1 barbel di dada. Jongkok sampai paha sejajar lantai. Punggung tegak!' },
+                { name: 'Floor Press', target: 'Dada', sets: '3 set x 12-15 reps', tips: 'Tiduran di lantai. Dorong 2 barbel ke atas lurus, turun pelan sampai siku nyaris kena lantai.' },
+                { name: 'Bent Over Row', target: 'Punggung', sets: '3 set x 12-15 reps', tips: 'Bungkuk 45 derajat, punggung lurus. Tarik barbel ke pinggang. Tahan 1 detik di atas.' },
+                { name: 'Overhead Press', target: 'Bahu', sets: '3 set x 10-12 reps', tips: 'Dorong barbel dari bahu ke atas kepala sampai tangan lurus. Turunkan pelan sekali.' },
+                { name: 'Hammer Curl', target: 'Lengan (Bicep)', sets: '3 set x 12-15 reps', tips: 'Pegang barbel seperti palu. Angkat bergantian. Jangan ayun badan.' }
+            ],
+            'B': [
+                { name: 'Lunges', target: 'Kaki Total', sets: '3 set x 10 reps/kaki', tips: 'Langkah ke depan, tekuk lutut. Jangan sampai lutut depan melebihi ujung kaki.' },
+                { name: 'Push Up', target: 'Dada & Bahu', sets: '3 set x Failure', tips: 'Sampai tidak kuat angkat lagi. Pakai lutut kalau tidak kuat full.' },
+                { name: 'Deadlift (Dumbbell)', target: 'Punggung Bawah', sets: '3 set x 12 reps', tips: 'Turunkan barbel menyusuri kaki, dorong pantat ke belakang. Punggung HARUS lurus.' },
+                { name: 'Lateral Raise', target: 'Bahu Samping', sets: '3 set x 10-12 reps', tips: 'Hati-hati! Tangan jangan lurus total, tekuk siku sedikit. Angkat seperti kepak sayap.' },
+                { name: 'Calf Raise', target: 'Betis', sets: '3 set x 20 reps', tips: 'Jinjit setinggi mungkin, tahan, turun pelan.' }
+            ]
+        };
+
+        // --- Interaction Handling ---
+
+        // 1. Initialize Schedule Section
+        function initSchedule() {
+            const container = document.getElementById('schedule-buttons');
+            const days = Object.keys(scheduleData);
+            
+            days.forEach((day, index) => {
+                const btn = document.createElement('button');
+                btn.className = `p-3 rounded-lg text-sm font-bold border transition-all ${index === 0 ? 'bg-orange-600 text-white border-orange-600 ring-2 ring-orange-300' : 'bg-white text-gray-600 border-gray-200 hover:border-orange-400'}`;
+                btn.innerText = day;
+                btn.onclick = () => selectDay(day, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function selectDay(day, btnElement) {
+            // Update UI
+            const buttons = document.getElementById('schedule-buttons').children;
+            for(let btn of buttons) {
+                btn.className = 'p-3 rounded-lg text-sm font-bold border transition-all bg-white text-gray-600 border-gray-200 hover:border-orange-400';
+            }
+            btnElement.className = 'p-3 rounded-lg text-sm font-bold border transition-all bg-orange-600 text-white border-orange-600 ring-2 ring-orange-300';
+
+            // Update Details
+            const data = scheduleData[day];
+            document.getElementById('detail-day').innerText = day;
+            document.getElementById('detail-activity').innerText = data.activity;
+            document.getElementById('detail-desc').innerText = data.desc;
+        }
+
+        // 2. Initialize Workout Section
+        function renderWorkout(planKey) {
+            const container = document.getElementById('workout-content');
+            container.innerHTML = '';
+            
+            workoutPlans[planKey].forEach((exercise, index) => {
+                const el = document.createElement('div');
+                el.className = 'bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer group';
+                // Toggle details on click
+                el.onclick = () => {
+                    const details = el.querySelector('.ex-details');
+                    details.classList.toggle('hidden');
+                };
+
+                el.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            <span class="bg-gray-100 text-gray-600 font-bold w-8 h-8 flex items-center justify-center rounded-full text-sm">${index + 1}</span>
+                            <div>
+                                <h4 class="text-lg font-bold text-gray-900 group-hover:text-orange-600">${exercise.name}</h4>
+                                <p class="text-sm text-gray-500">${exercise.target}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-sm font-bold text-gray-800 bg-gray-50 px-2 py-1 rounded">${exercise.sets}</span>
+                            <span class="text-xs text-gray-400 mt-1 inline-block group-hover:text-orange-500">▼ Detail</span>
+                        </div>
+                    </div>
+                    <div class="ex-details hidden mt-4 pt-3 border-t border-gray-100 text-sm text-gray-600 bg-orange-50 p-3 rounded">
+                        <strong>Cara Eksekusi:</strong> ${exercise.tips}
+                    </div>
+                `;
+                container.appendChild(el);
+            });
+        }
+
+        function switchPlan(plan) {
+            renderWorkout(plan);
+            // Update Tab Styles
+            const btnA = document.getElementById('btn-plan-a');
+            const btnB = document.getElementById('btn-plan-b');
+            
+            if(plan === 'A') {
+                btnA.className = 'px-6 py-2 rounded-md text-sm font-medium bg-orange-600 text-white shadow-sm transition-colors';
+                btnB.className = 'px-6 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors';
             } else {
-                music.pause();
-                iconPlay.style.display = 'block';
-                iconPause.style.display = 'none';
-                musicBtn.title = "Putar Musik";
+                btnB.className = 'px-6 py-2 rounded-md text-sm font-medium bg-orange-600 text-white shadow-sm transition-colors';
+                btnA.className = 'px-6 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors';
             }
+        }
+
+        // 3. Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         });
-        
-        // === FUNGSI HITUNG MUNDUR (COUNTDOWN) ===
-        const countdownTimer = document.getElementById('countdown-timer');
-        const daysEl = document.getElementById('countdown-days');
-        const hoursEl = document.getElementById('countdown-hours');
-        const minutesEl = document.getElementById('countdown-minutes');
-        const secondsEl = document.getElementById('countdown-seconds');
 
-        // PENTING: Ganti tanggal di bawah ini dengan tanggal acara Anda
-        const tanggalTarget = "January 1, 2026 00:00:00";
+        // --- Charts Initialization ---
+        window.onload = function() {
+            initSchedule();
+            renderWorkout('A'); // Default Plan
 
-        function updateCountdown() {
-            const targetDate = new Date(tanggalTarget).getTime();
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                clearInterval(countdownInterval);
-                countdownTimer.innerHTML = '<h3 style="color: var(--secondary-color);">Selamat Tahun Baru!</h3>';
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            daysEl.innerText = days < 10 ? '0' + days : days;
-            hoursEl.innerText = hours < 10 ? '0' + hours : hours;
-            minutesEl.innerText = minutes < 10 ? '0' + minutes : minutes;
-            secondsEl.innerText = seconds < 10 ? '0' + seconds : seconds;
-        }
-
-        const countdownInterval = setInterval(updateCountdown, 1000);
-        if(countdownTimer) {
-          updateCountdown();
-        }
-
-        
-        // === FUNGSI NAVIGASI TAB ===
-        const tabs = document.querySelectorAll('.tab-btn');
-        const contents = document.querySelectorAll('.tab-content');
-
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Hapus kelas 'active' dari semua tab dan konten
-                tabs.forEach(item => item.classList.remove('active'));
-                contents.forEach(item => item.classList.remove('active'));
-
-                // Tambahkan kelas 'active' ke tab yang diklik dan konten yang sesuai
-                tab.classList.add('active');
-                const targetContent = document.getElementById(tab.dataset.tab);
-                if (targetContent) {
-                    targetContent.classList.add('active');
+            // Chart 1: Schedule Energy Distribution
+            const ctxSchedule = document.getElementById('scheduleChart').getContext('2d');
+            new Chart(ctxSchedule, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(scheduleData),
+                    datasets: [{
+                        label: 'Tingkat Aktivitas Fisik (%)',
+                        data: Object.values(scheduleData).map(d => d.intensity),
+                        backgroundColor: Object.values(scheduleData).map(d => d.type === 'Latihan' ? 'rgba(234, 88, 12, 0.8)' : 'rgba(16, 185, 129, 0.5)'),
+                        borderColor: Object.values(scheduleData).map(d => d.type === 'Latihan' ? 'rgba(234, 88, 12, 1)' : 'rgba(16, 185, 129, 1)'),
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.raw > 50 ? 'Latihan: Bakar Energi' : 'Istirahat: Simpan Energi';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, max: 100, display: false },
+                        x: { grid: { display: false } }
+                    }
                 }
             });
-        });
 
-        // === FUNGSI LIGHTBOX GALERI ===
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const galleryImages = document.querySelectorAll('.gallery-item img');
-        const lightboxClose = document.querySelector('.lightbox-close');
+            // Chart 2: Nutrition Plate
+            const ctxNutri = document.getElementById('nutritionChart').getContext('2d');
+            new Chart(ctxNutri, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Karbohidrat (Nasi, Roti, Ubi)', 'Protein (Telur, Tempe, Tahu)', 'Sayur & Lemak Sehat'],
+                    datasets: [{
+                        data: [50, 30, 20], // Rough estimate for bulking ectomorph
+                        backgroundColor: [
+                            '#FDBA74', // Orange-300
+                            '#FB923C', // Orange-400
+                            '#86EFAC'  // Green-300
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+                    }
+                }
+            });
+        };
 
-        galleryImages.forEach(img => {
-            img.addEventListener('click', () => {
-                lightbox.classList.add('show');
-                lightboxImg.src = img.src;
-           
- });
-        });
-
-        lightboxClose.addEventListener('click', () => {
-            lightbox.classList.remove('show');
-        });
-
-        // Menutup lightbox saat mengklik area gelap
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.classList.remove('show');
-            }
-        });
     </script>
 </body>
-    </html>
+                    </html>    
