@@ -2,12 +2,12 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ectomorph Guide V7: Athletic Fit</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>EctoGuide V17: Fixed</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -15,588 +15,552 @@
                 extend: {
                     fontFamily: { sans: ['Outfit', 'sans-serif'] },
                     colors: {
-                        brand: { 50: '#fff7ed', 100: '#ffedd5', 500: '#f97316', 600: '#ea580c', 900: '#7c2d12' },
-                        navy: { 800: '#1e293b', 900: '#0f172a' }
-                    }
+                        brand: { 50: '#fff7ed', 100: '#ffedd5', 500: '#f97316', 600: '#ea580c', 700: '#c2410c' },
+                    },
+                    boxShadow: { 'up': '0 -4px 6px -1px rgba(0, 0, 0, 0.05)' }
                 }
             }
         }
     </script>
 
     <style>
-        /* Modern Background Pattern */
         body {
             background-color: #f8fafc;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-size: 16px 16px;
+            padding-bottom: 100px;
+            overflow-x: hidden;
         }
-        
-        /* Glassmorphism Cards */
         .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(241, 245, 249, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-radius: 1.25rem;
         }
-
-        .glass-nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
-        }
-
-        /* Animations */
-        .hover-lift { transition: transform 0.2s ease, box-shadow 0.2s ease; }
-        .hover-lift:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
-
-        .details-expand { transition: all 0.3s ease-in-out; overflow: hidden; max-height: 0; opacity: 0; }
-        .details-expand.open { max-height: 500px; opacity: 1; margin-top: 0.5rem; }
-
-        .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #f97316; width: 20px; height: 20px; animation: spin 1s linear infinite; }
+        .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #f97316; width: 16px; height: 16px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .nav-btn.active { color: #f97316; }
+        .nav-btn.active i { transform: scale(1.1); transition: all 0.2s; }
+        .app-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .app-section.active-section { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Custom Scrollbar */
-        .scroller::-webkit-scrollbar { width: 6px; }
-        .scroller::-webkit-scrollbar-track { background: transparent; }
-        .scroller::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .workout-check {
+            width: 24px; height: 24px; border-radius: 50%; border: 2px solid #cbd5e1;
+            display: flex; align-items: center; justify-content: center; color: transparent; transition: all 0.2s;
+        }
+        .workout-check.done { background-color: #22c55e; border-color: #22c55e; color: white; }
+
+        /* TOAST FIX */
+        #toast-container {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 9999; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px;
+        }
+        .toast-item {
+            background-color: #1e293b; color: white; padding: 12px 20px; border-radius: 50px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); display: flex; align-items: center; gap: 10px;
+            font-size: 0.875rem; font-weight: 600; animation: slideDown 0.3s ease-out;
+        }
+        .toast-item.error { background-color: #ef4444; }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
     </style>
 </head>
-<body class="text-slate-700">
+<body class="text-slate-700 font-sans md:max-w-md md:mx-auto md:shadow-2xl md:min-h-screen md:bg-white">
 
-    <!-- NAVIGATION -->
-    <nav class="glass-nav sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-2">
-                    <div class="bg-brand-600 text-white p-1.5 rounded-lg font-bold text-lg">E</div>
-                    <span class="text-xl font-bold text-slate-800 tracking-tight">Ecto<span class="text-brand-600">Guide</span></span>
-                </div>
-                
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex space-x-1 items-center">
-                    <a href="#ai-assistant" class="px-4 py-2 rounded-full text-sm font-semibold text-purple-700 bg-purple-50 hover:bg-purple-100 transition">✨ Tanya AI</a>
-                    <a href="#latihan" class="nav-item px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-orange-50 rounded-lg transition">🏋️ Latihan Lengan</a>
-                    <a href="#kalori" class="nav-item px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-orange-50 rounded-lg transition">🍽️ Cek Makanan</a>
-                    <a href="#tools" class="nav-item px-3 py-2 text-sm font-medium text-slate-600 hover:text-brand-600 hover:bg-orange-50 rounded-lg transition">📊 Tools</a>
-                </div>
-                
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg hover:bg-slate-100 text-slate-600">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
-            </div>
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md pt-6 pb-4 px-6 flex justify-between items-center border-b border-slate-100">
+        <div>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider" id="header-subtitle">Halo Pejuang,</p>
+            <h1 class="text-2xl font-extrabold text-slate-800 leading-tight" id="header-title">EctoGuide V17</h1>
         </div>
-        <!-- Mobile Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 p-4 space-y-2 shadow-lg absolute w-full">
-            <a href="#ai-assistant" class="block px-4 py-3 rounded-xl bg-purple-50 text-purple-700 font-bold">✨ Asisten AI</a>
-            <a href="#latihan" class="block px-4 py-2 text-slate-600 font-medium">Latihan (Fokus Lengan)</a>
-            <a href="#kalori" class="block px-4 py-2 text-slate-600 font-medium">Cek Makanan</a>
-            <a href="#tools" class="block px-4 py-2 text-slate-600 font-medium">Tools & Grafik</a>
-        </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <header class="relative pt-16 pb-20 lg:pt-24 lg:pb-28 text-center px-4 overflow-hidden">
-        <!-- Decorative blobs -->
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div class="absolute top-0 left-1/3 w-[500px] h-[500px] bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-
-        <div class="relative z-10 max-w-4xl mx-auto">
-            <span class="inline-block py-1 px-3 rounded-full bg-orange-100 text-orange-700 text-xs font-bold tracking-wider uppercase mb-4 border border-orange-200">Edisi Khusus: Athletic Fit</span>
-            <h1 class="text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
-                Isi Bagian yang <span class="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-500">Kosong.</span>
-            </h1>
-            <p class="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed mb-8">
-                Panduan cerdas untuk mengisi lengan kecil dan menyamarkan tulang menonjol. 
-                Fokus pada tubuh <strong>berisi, padat, dan sehat</strong> tanpa menjadi binaragawan.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="#latihan" class="px-8 py-4 rounded-full bg-brand-600 text-white font-bold shadow-lg shadow-orange-200 hover:bg-brand-500 hover:scale-105 transition transform">
-                    Mulai Latihan Lengan
-                </a>
-                <a href="#kalori" class="px-8 py-4 rounded-full bg-white text-slate-700 font-bold border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 transition">
-                    Cek Menu Makan
-                </a>
-            </div>
+        <!-- FITUR BARU: STREAK COUNTER -->
+        <div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100 shadow-sm">
+            <i class="fas fa-fire text-orange-500 animate-pulse"></i>
+            <span class="text-sm font-bold text-orange-700" id="streak-count">1</span>
+            <span class="text-[10px] text-orange-400 font-bold">Hari</span>
         </div>
     </header>
 
-    <main class="space-y-24 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main class="p-5 space-y-6">
 
-        <!-- 1. AI SECTION (MODERNIZED) -->
-        <section id="ai-assistant" class="scroll-mt-24">
-            <div class="glass-card rounded-3xl p-1 bg-gradient-to-br from-purple-100 via-white to-blue-50 overflow-hidden">
-                <div class="bg-white/60 backdrop-blur-sm rounded-[20px] p-6 sm:p-10 border border-white/50">
-                    <div class="text-center mb-10">
-                        <h2 class="text-3xl font-bold text-slate-900">✨ Asisten AI Pribadi</h2>
-                        <p class="text-slate-500 mt-2">Bingung mau makan apa atau kenapa berat stuck? Tanya ahlinya.</p>
-                    </div>
-
-                    <div class="grid lg:grid-cols-2 gap-8">
-                        <!-- Recipe Card -->
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover-lift relative group">
-                            <div class="absolute -top-3 -right-3 bg-gradient-to-r from-orange-400 to-pink-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-lg group-hover:scale-110 transition">🍳</div>
-                            <h3 class="text-lg font-bold text-slate-800 mb-1">Koki 'Anti-Lapar'</h3>
-                            <p class="text-sm text-slate-400 mb-4">Punya bahan sisa? Sulap jadi makanan padat nutrisi.</p>
-                            <textarea id="recipe-ingredients" rows="2" placeholder="Contoh: Saya punya tempe, telur, dan kecap..." class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-orange-500 outline-none transition mb-4 resize-none"></textarea>
-                            <button onclick="generateRecipe()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl flex justify-center items-center gap-2 hover:bg-slate-800 transition">
-                                <span id="recipe-btn-text">Buatkan Resep</span>
-                                <div id="recipe-loader" class="loader hidden"></div>
-                            </button>
-                            <div id="recipe-result" class="mt-4 hidden p-4 bg-orange-50/50 rounded-xl text-sm border border-orange-100 max-h-60 overflow-y-auto scroller prose text-slate-700"></div>
-                        </div>
-
-                        <!-- Nutrition Analysis Card -->
-                        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover-lift relative group">
-                            <div class="absolute -top-3 -right-3 bg-gradient-to-r from-blue-400 to-indigo-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-lg group-hover:scale-110 transition">📊</div>
-                            <h3 class="text-lg font-bold text-slate-800 mb-1">Cek Kualitas Gizi</h3>
-                            <p class="text-sm text-slate-400 mb-4">Apakah makananmu cukup untuk menimbun daging?</p>
-                            <div class="bg-blue-50/80 p-3 rounded-lg mb-5 text-sm text-blue-800 flex justify-between items-center">
-                                <span>Status Piring:</span>
-                                <span class="font-bold bg-white px-2 py-1 rounded text-blue-600 shadow-sm"><span id="ai-status-cal">0</span> kkal</span>
-                            </div>
-                            <button onclick="analyzePlate()" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl flex justify-center items-center gap-2 hover:bg-blue-700 transition">
-                                <span id="analyze-btn-text">Analisis Nutrisi</span>
-                                <div id="analyze-loader" class="loader hidden" style="border-top-color: white;"></div>
-                            </button>
-                            <div id="analyze-result" class="mt-4 hidden p-4 bg-blue-50/50 rounded-xl text-sm border border-blue-100 max-h-60 overflow-y-auto scroller prose text-slate-700"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. WORKOUT ZONE (UPDATED FOR ARMS) -->
-        <section id="latihan" class="scroll-mt-24">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-8">
-                <div>
-                    <h2 class="text-3xl font-bold text-slate-900">🏋️ Zona Latihan Athletic</h2>
-                    <p class="text-slate-500 mt-2 max-w-xl">
-                        Fokus: Mengisi lengan, bahu, dan dada agar baju tidak kedodoran. 
-                        Gerakan ini aman, tidak bikin cedera, dan bikin badan tegap.
-                    </p>
-                </div>
-                
-                <!-- Timer Widget -->
-                <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-xl flex items-center gap-5 mt-6 md:mt-0 transform rotate-1 hover:rotate-0 transition">
-                    <div class="text-center">
-                        <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Istirahat</div>
-                        <div id="timer-display" class="font-mono font-bold text-green-400 text-2xl tracking-tighter">01:30</div>
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <button onclick="startTimer()" class="bg-green-500 hover:bg-green-600 px-4 py-1 rounded-lg text-xs font-bold transition">Start</button>
-                        <button onclick="resetTimer()" class="bg-slate-700 hover:bg-slate-600 px-4 py-1 rounded-lg text-xs font-bold transition">Reset</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Special Note for Arms -->
-            <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-8 rounded-r-xl">
-                <h4 class="font-bold text-orange-800">💪 Tips Lengan Berisi (Menutup Tulang)</h4>
-                <p class="text-sm text-orange-700 mt-1">
-                    Untuk menutupi tonjolan tulang siku dan pergelangan tangan, kamu butuh mengembangkan otot <strong>Tricep</strong> (lengan belakang) dan <strong>Forearm</strong> (lengan bawah). Menu di bawah sudah disesuaikan untuk itu.
-                </p>
-            </div>
-
-            <!-- Plan Toggles -->
-            <div class="flex gap-4 mb-8 overflow-x-auto pb-2">
-                <button onclick="renderWorkout('A')" id="btn-plan-a" class="flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-md bg-brand-600 text-white ring-2 ring-orange-300">
-                    Plan A (Badan Atas & Lengan)
-                </button>
-                <button onclick="renderWorkout('B')" id="btn-plan-b" class="flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-sm bg-white text-slate-600 hover:bg-slate-50">
-                    Plan B (Kaki & Bahu Tegap)
-                </button>
-            </div>
-
-            <!-- Cards Grid -->
-            <div id="workout-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- JS Will Populate This -->
-            </div>
-        </section>
-
-        <!-- 3. FOOD CHECKER (IMPROVED UI) -->
-        <section id="kalori" class="scroll-mt-24">
-            <div class="glass-card rounded-3xl overflow-hidden shadow-xl border-0">
-                <div class="bg-emerald-600 p-8 text-white relative overflow-hidden">
-                    <div class="relative z-10">
-                        <h2 class="text-3xl font-bold mb-2">🍽️ Cek Piring Makan</h2>
-                        <p class="text-emerald-100">Pastikan piringmu hari ini cukup untuk menutup tulang.</p>
-                        
-                        <!-- Progress Bar -->
-                        <div class="mt-8 bg-black/20 rounded-2xl p-1.5 backdrop-blur-md border border-white/10">
-                            <div class="flex justify-between text-xs font-bold px-2 mb-2 text-emerald-50">
-                                <span>Terisi: <span id="eaten-val" class="text-white text-lg">0</span> kkal</span>
-                                <span>Target: <span id="goal-val" class="text-white text-lg">--</span></span>
-                            </div>
-                            <div class="w-full bg-black/20 rounded-xl h-3 overflow-hidden">
-                                <div id="calorie-bar" class="bg-yellow-400 h-full rounded-xl transition-all duration-700 ease-out relative" style="width: 0%">
-                                    <div class="absolute inset-0 bg-white/30 animate-pulse"></div>
-                                </div>
-                            </div>
-                            <div id="status-msg" class="text-center text-xs font-bold mt-2 text-yellow-300">⚠️ Set target di Tools dulu ya!</div>
-                        </div>
-                    </div>
-                    <!-- Decor -->
-                    <div class="absolute -right-10 -bottom-20 text-9xl opacity-10 rotate-12">🥗</div>
-                </div>
-
-                <div class="p-6 grid lg:grid-cols-5 gap-8 bg-white">
-                    <!-- Search Area -->
-                    <div class="lg:col-span-3 space-y-6">
-                        <div class="relative">
-                            <input type="text" id="food-search" onkeyup="filterFood()" placeholder="Cari: Nasi Uduk, Telur, Susu..." class="w-full pl-12 pr-4 py-4 rounded-xl bg-slate-50 border-2 border-slate-100 focus:border-emerald-500 focus:bg-white text-lg transition outline-none">
-                            <span class="absolute left-4 top-4 text-2xl text-slate-400">🔍</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-2">
-                            <button onclick="filterCategory('all', this)" class="cat-btn px-4 py-2 rounded-lg bg-emerald-100 text-emerald-700 text-sm font-bold transition active">Semua</button>
-                            <button onclick="filterCategory('karbo', this)" class="cat-btn px-4 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium transition">Karbo</button>
-                            <button onclick="filterCategory('lauk', this)" class="cat-btn px-4 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium transition">Lauk (Protein)</button>
-                            <button onclick="filterCategory('sayur', this)" class="cat-btn px-4 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium transition">Sayur</button>
-                            <button onclick="filterCategory('jajan', this)" class="cat-btn px-4 py-2 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 text-sm font-medium transition">Jajan</button>
-                        </div>
-
-                        <div id="food-list" class="h-96 overflow-y-auto scroller space-y-3 pr-2"></div>
-                    </div>
-
-                    <!-- Daily Plate -->
-                    <div class="lg:col-span-2 bg-slate-50 rounded-2xl p-5 border border-slate-200 flex flex-col h-[500px] lg:h-auto shadow-inner">
-                        <div class="flex justify-between items-center mb-4 pb-2 border-b border-slate-200">
-                            <h3 class="font-bold text-slate-800 flex items-center gap-2">📝 Menu Hari Ini</h3>
-                            <button onclick="clearPlate()" class="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1 rounded hover:bg-red-50 transition">Hapus Semua</button>
-                        </div>
-                        
-                        <div id="daily-log" class="flex-grow overflow-y-auto scroller space-y-2 mb-4 pr-1">
-                            <div class="text-center text-slate-400 text-sm py-10 italic">Belum ada makanan.<br>Klik (+) untuk menambah.</div>
-                        </div>
-
-                        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                            <div class="flex justify-between items-end">
-                                <span class="text-slate-500 text-sm font-medium">Total Kalori</span>
-                                <span class="text-3xl font-bold text-emerald-600 leading-none" id="total-display">0</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. TOOLS & PRINCIPLES -->
-        <section id="tools" class="grid lg:grid-cols-2 gap-8 scroll-mt-24">
+        <!-- ================= 1. JADWAL & PRINSIP (HOME) ================= -->
+        <section id="home-section" class="app-section active-section space-y-6">
             
-            <!-- Calculator -->
-            <div class="glass-card rounded-3xl p-8 bg-white">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-slate-900 text-white p-2 rounded-lg text-xl">🔢</div>
-                    <h2 class="text-xl font-bold text-slate-900">Hitung Target Kalori</h2>
+            <!-- Summary Card -->
+            <div class="glass-card p-5 bg-gradient-to-br from-brand-500 to-orange-600 text-white relative overflow-hidden">
+                <i class="fas fa-bolt absolute -right-4 -bottom-4 text-8xl opacity-10 rotate-12"></i>
+                <div class="relative z-10">
+                    <h3 class="font-bold text-lg">Status Hari Ini</h3>
+                    <div class="mt-4 flex justify-between items-end">
+                        <div>
+                            <p class="text-brand-100 text-xs uppercase">Target Kalori</p>
+                            <p class="text-2xl font-bold"><span id="dash-cal">0</span> <span class="text-sm font-normal">/ <span id="dash-target">--</span></span></p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-brand-100 text-xs uppercase">Berat Badan</p>
+                            <p class="text-2xl font-bold"><span id="dash-weight">--</span> <span class="text-sm font-normal">kg</span></p>
+                        </div>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Grafik Energi -->
+            <div class="glass-card p-4 bg-white">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="font-bold text-sm text-slate-700">Manajemen Energi</h3>
+                    <span class="text-[10px] bg-slate-100 px-2 py-1 rounded text-slate-500">Mingguan</span>
+                </div>
+                <div class="h-40 w-full relative"><canvas id="energyChart"></canvas></div>
+            </div>
+
+            <!-- Detail Harian -->
+            <div class="glass-card p-4 bg-white">
+                <h3 class="font-bold text-sm text-slate-700 mb-3">Detail Harian</h3>
+                <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-3" id="day-buttons"></div>
+                <div class="bg-orange-50 p-4 rounded-xl border border-orange-100 transition-all" id="daily-card">
+                    <h4 class="font-bold text-brand-700 text-lg mb-1" id="day-title">Senin</h4>
+                    <p class="font-bold text-slate-800" id="day-activity">Latihan A</p>
+                    <p class="text-sm text-slate-500 mt-2 leading-relaxed" id="day-desc">...</p>
+                </div>
+            </div>
+
+            <!-- PRINSIP PENTING (GAMBAR v15) -->
+            <div class="space-y-3">
+                <h2 class="text-lg font-bold text-slate-800">Prinsip Penting</h2>
                 
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase">Berat (kg)</label>
-                        <input type="number" id="calc-weight" value="30" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none">
+                <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500"></div>
+                    <div class="text-2xl mt-1"><i class="fas fa-battery-full text-green-500"></i></div>
+                    <div><h4 class="font-bold text-slate-800 text-sm">Hemat Energi</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Jangan lari jauh/main bola berjam-jam. Simpan kalori.</p></div>
+                </div>
+
+                <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+                    <div class="text-2xl mt-1">🍲</div>
+                    <div><h4 class="font-bold text-slate-800 text-sm">Surplus Kalori</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Makan LEBIH dari yang kamu bakar.</p></div>
+                </div>
+
+                <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500"></div>
+                    <div class="text-2xl mt-1"><i class="fas fa-stopwatch text-slate-400"></i></div>
+                    <div><h4 class="font-bold text-slate-800 text-sm">Tempo Pelan</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Angkat beban pelan (4 detik turun).</p></div>
+                </div>
+
+                <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+                    <div class="text-2xl mt-1"><i class="fas fa-bed text-blue-400"></i></div>
+                    <div><h4 class="font-bold text-slate-800 text-sm">Tidur = Tumbuh</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Otot HANYA tumbuh saat tidur 8 jam.</p></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= 2. LATIHAN (WORKOUT + CUSTOM) ================= -->
+        <section id="workout-section" class="app-section space-y-5">
+            
+            <!-- REST TIMER -->
+            <div class="bg-slate-800 text-white p-4 rounded-2xl sticky top-[80px] z-30 shadow-lg flex justify-between items-center">
+                <div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Istirahat Antar Set</p>
+                    <div id="timer-display" class="text-3xl font-mono font-bold text-brand-500">00:00</div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <div class="flex gap-1">
+                        <button onclick="startTimer(60)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-bold transition">60s</button>
+                        <button onclick="startTimer(90)" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-xs font-bold transition">90s</button>
+                    </div>
+                    <button onclick="stopTimer()" class="bg-red-500/20 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded text-[10px] font-bold transition">Stop</button>
+                </div>
+            </div>
+
+            <!-- Selector Plan -->
+            <div class="flex bg-slate-100 p-1 rounded-2xl overflow-x-auto">
+                <button onclick="renderWorkout('A')" id="btn-a" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap transition-all bg-white text-brand-600 shadow-sm">Plan A</button>
+                <button onclick="renderWorkout('B')" id="btn-b" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50">Plan B</button>
+                <button onclick="renderWorkout('C')" id="btn-c" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50">Plan C</button>
+                <button onclick="renderWorkout('D')" id="btn-d" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50"><i class="fas fa-plus-circle mr-1"></i>Custom</button>
+            </div>
+
+            <!-- Area untuk Plan D (Custom) -->
+            <div id="custom-workout-area" class="hidden">
+                <div class="glass-card p-4 bg-orange-50 border border-orange-200 mb-4">
+                    <h3 class="font-bold text-brand-700 mb-3 text-sm">Tambah Gerakan Baru</h3>
+                    <div class="space-y-3">
+                        <input id="cw-name" type="text" placeholder="Nama Gerakan (cth: Pull Up)" class="w-full p-2 rounded-lg border text-sm">
+                        <div class="flex gap-2">
+                            <input id="cw-sets" type="text" placeholder="Set (cth: 3 Set)" class="w-1/2 p-2 rounded-lg border text-sm">
+                            <input id="cw-reps" type="text" placeholder="Reps (cth: 12 Reps)" class="w-1/2 p-2 rounded-lg border text-sm">
+                        </div>
+                        <textarea id="cw-desc" placeholder="Cara Melakukan..." class="w-full p-2 rounded-lg border text-sm h-20"></textarea>
+                        <button onclick="addCustomWorkout()" class="w-full bg-brand-600 text-white py-2 rounded-lg font-bold text-sm hover:bg-brand-700">Simpan Gerakan</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="arm-tip" class="hidden bg-orange-50 border border-orange-200 p-3 rounded-xl flex gap-3 items-start">
+                <i class="fas fa-lightbulb text-brand-500 mt-1"></i>
+                <div><h4 class="font-bold text-brand-700 text-xs">Tips Lengan</h4><p class="text-[10px] text-slate-600">Latih Tricep & Forearm.</p></div>
+            </div>
+
+            <div id="workout-container" class="space-y-3"></div>
+        </section>
+
+
+        <!-- ================= 3. MAKANAN (INPUT FIXED & AI) ================= -->
+        <section id="food-section" class="app-section space-y-5">
+            <div class="glass-card p-5 bg-white sticky top-[80px] z-30">
+                 <div class="flex justify-between items-end mb-3">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase">Harian</p>
+                            <h2 class="text-xl font-bold"><span id="total-cal-page" class="text-brand-600">0</span> / <span id="target-display">--</span> kkal</h2>
+                        </div>
+                        <button onclick="resetPlate()" class="text-xs text-slate-400 hover:text-red-500"><i class="fas fa-trash-alt mr-1"></i> Reset</button>
+                    </div>
+                    <div class="bg-slate-100 rounded-full h-3 w-full overflow-hidden">
+                        <div id="progress-bar" class="bg-brand-500 h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                    </div>
+            </div>
+
+            <div class="glass-card p-4 bg-blue-50 border border-blue-100 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-tint text-blue-500 text-xl"></i>
+                    <div><h4 class="text-sm font-bold text-blue-800">Air Minum</h4><p class="text-[10px] text-blue-600">Otot butuh air.</p></div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-lg font-bold text-blue-700"><span id="water-count">0</span> Gelas</span>
+                    <button onclick="addWater()" class="bg-blue-500 text-white w-8 h-8 rounded-full shadow hover:bg-blue-600">+</button>
+                </div>
+            </div>
+
+            <div class="space-y-3">
+                <div class="relative group">
+                    <input type="text" id="food-search" placeholder="Cari: Nasi, Ayam..." class="w-full pl-4 pr-24 py-3 rounded-2xl bg-white border border-slate-200 outline-none text-sm shadow-sm">
+                    <button onclick="searchWithAI()" id="ai-btn" class="absolute right-1 top-1 bottom-1 bg-slate-800 text-white px-3 rounded-xl text-xs font-bold flex items-center gap-1">
+                        <i class="fas fa-magic text-brand-300"></i> Cari AI
+                    </button>
+                </div>
+                <div id="ai-loading" class="hidden text-xs text-brand-600 ml-2"><div class="loader inline-block w-3 h-3 mr-1"></div> Mencari...</div>
+                
+                <button onclick="document.getElementById('manual-form').classList.toggle('hidden')" class="text-xs text-brand-600 font-bold underline ml-2">Input Manual</button>
+                
+                <!-- FIX INPUT MANUAL (LEBIH LEGA & RAPI) -->
+                <div id="manual-form" class="hidden bg-white p-4 rounded-xl border border-slate-100 shadow-sm animate-fade-in-down">
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-2">Tambah Makanan Sendiri</h4>
+                    <div class="space-y-3">
+                        <input id="man-name" type="text" placeholder="Nama Makanan (cth: Bakso)" class="w-full p-3 rounded-lg border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-brand-500 outline-none transition">
+                        <div class="flex gap-2">
+                            <input id="man-cal" type="number" placeholder="Kalori (kkal)" class="w-full p-3 rounded-lg border border-slate-200 bg-slate-50 text-sm focus:bg-white focus:border-brand-500 outline-none transition">
+                            <button onclick="addManual()" class="bg-brand-600 text-white px-6 rounded-lg font-bold text-sm shadow-lg hover:bg-brand-700 transition">Simpan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="my-plate" class="space-y-2 pb-4 border-b border-slate-100"></div>
+            <div>
+                <h3 class="font-bold text-slate-400 text-xs uppercase mb-2">Database Offline</h3>
+                <div id="food-list" class="h-48 overflow-y-auto scroller space-y-2 pr-1"></div>
+            </div>
+        </section>
+
+
+        <!-- ================= 4. PROGRESS ================= -->
+        <section id="progress-section" class="app-section space-y-6">
+            <div class="glass-card p-5 bg-white">
+                <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
+                    <i class="fas fa-calculator text-slate-400"></i> Pengaturan Target
+                </h2>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase">Berat (kg)</label>
+                            <input id="bb" type="number" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:bg-white outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase">Tinggi (cm)</label>
+                            <input id="tb" type="number" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:bg-white outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase">Umur (thn)</label>
+                            <input id="age" type="number" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:bg-white outline-none">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="text-[10px] font-bold text-slate-400 uppercase">Gender</label>
+                            <select id="gender" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:bg-white outline-none">
+                                <option value="male">Pria</option>
+                                <option value="female">Wanita</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase">Tinggi (cm)</label>
-                        <input type="number" id="calc-height" value="165" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase">Umur</label>
-                        <input type="number" id="calc-age" value="14" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none">
-                    </div>
-                    <div class="space-y-1">
-                        <label class="text-xs font-bold text-slate-500 uppercase">Aktivitas</label>
-                        <select id="calc-activity" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 outline-none">
-                            <option value="1.2">Jarang Olahraga</option>
-                            <option value="1.375" selected>3x Seminggu</option>
-                            <option value="1.55">5x Seminggu</option>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Tingkat Aktivitas</label>
+                        <select id="act" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold focus:bg-white outline-none">
+                            <option value="1.2">Rebahan (Sedentary)</option>
+                            <option value="1.375">Ringan (Olah raga 1-3 hari)</option>
+                            <option value="1.55">Sedang (Olah raga 3-5 hari)</option>
+                            <option value="1.725">Berat (Olah raga 6-7 hari)</option>
+                            <option value="1.9">Ekstrem (Atlet)</option>
                         </select>
                     </div>
-                </div>
-                <button onclick="calculateCalories()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl hover:bg-slate-800 hover:shadow-lg transition">Hitung Sekarang</button>
-                
-                <div id="calc-result" class="hidden mt-6 bg-green-50 p-5 rounded-2xl border border-green-100 text-center animate-pulse">
-                    <p class="text-sm text-green-800 font-medium">Target Harianmu:</p>
-                    <p class="text-4xl font-extrabold text-green-600 mt-2"><span id="target-cal">2000</span> <span class="text-lg text-green-500">kkal</span></p>
+                    <button onclick="calculateTarget()" class="w-full bg-slate-800 text-white py-3.5 rounded-xl font-bold text-sm hover:bg-slate-700 transition shadow-md flex justify-center items-center gap-2">
+                        <i class="fas fa-save"></i> Hitung & Simpan Target
+                    </button>
+                    <div id="target-result" class="hidden bg-green-50 p-3 rounded-xl border border-green-200 text-center animate-bounce">
+                        <p class="text-xs text-green-800">Target Harian Baru:</p>
+                        <p class="text-2xl font-extrabold text-green-600" id="result-cal">0 kkal</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Weight Tracker -->
-            <div class="glass-card rounded-3xl p-8 bg-white flex flex-col">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="bg-orange-500 text-white p-2 rounded-lg text-xl">📈</div>
-                    <h2 class="text-xl font-bold text-slate-900">Grafik Kenaikan BB</h2>
+            <div class="glass-card p-5 bg-white">
+                <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fas fa-chart-line text-brand-500"></i> Grafik BB</h3>
+                <div class="flex gap-2 mb-3">
+                    <input id="chart-date" type="date" class="bg-slate-50 border rounded-lg text-xs p-2 flex-1">
+                    <input id="chart-weight" type="number" placeholder="kg" class="bg-slate-50 border rounded-lg text-xs p-2 w-16 text-center">
+                    <button onclick="addWeightEntry()" class="bg-brand-600 text-white w-10 rounded-lg text-xs font-bold">+</button>
                 </div>
-                
-                <div class="flex gap-3 mb-6">
-                    <input type="date" id="tracker-date" class="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
-                    <input type="number" id="tracker-weight" placeholder="kg" class="w-20 p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none">
-                    <button onclick="addWeightLog()" class="bg-orange-500 text-white w-12 rounded-xl font-bold hover:bg-orange-600 transition shadow-md">+</button>
-                </div>
-                
-                <div class="relative flex-grow h-48 w-full bg-slate-50 rounded-xl border border-slate-100 p-2">
-                    <canvas id="weightChart"></canvas>
-                </div>
-                <button onclick="resetData()" class="text-xs text-red-400 mt-3 text-right hover:text-red-600 font-medium">Reset Grafik</button>
-            </div>
-        </section>
-
-        <!-- 5. JADWAL & PRINSIP (Updated Look) -->
-        <section id="jadwal" class="py-8">
-            <h2 class="text-2xl font-bold mb-6 text-slate-900">📅 Jadwal & Prinsip Sukses</h2>
-            <div class="lg:grid lg:grid-cols-3 lg:gap-8 items-start">
-                <div class="col-span-2 mb-8 lg:mb-0">
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100 mb-6">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="font-bold text-slate-700">Manajemen Energi</h3>
-                            <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Mingguan</span>
-                        </div>
-                        <div class="h-56"><canvas id="scheduleChart"></canvas></div>
-                    </div>
-                    
-                    <div class="bg-white rounded-3xl p-6 shadow-sm border border-slate-100">
-                        <h3 class="font-bold text-slate-700 mb-4">Detail Harian</h3>
-                        <div class="flex gap-2 mb-6 overflow-x-auto pb-2" id="schedule-buttons"></div>
-                        <div id="daily-detail" class="bg-gradient-to-r from-orange-50 to-amber-50 p-5 rounded-2xl border border-orange-100 transition-all">
-                            <h4 class="font-bold text-orange-900 text-lg" id="detail-day">Senin</h4>
-                            <p class="text-slate-800 font-medium mt-1" id="detail-activity">Latihan A</p>
-                            <p class="text-slate-500 text-sm mt-2 italic leading-relaxed" id="detail-desc">...</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Principles Cards -->
-                <div class="col-span-1 space-y-4">
-                    <div class="bg-white p-5 rounded-2xl border-l-4 border-blue-500 shadow-sm hover-lift cursor-default">
-                        <div class="flex items-center gap-3 mb-1"><span class="text-2xl">🔋</span><h3 class="font-bold text-slate-800">Hemat Energi</h3></div>
-                        <p class="text-sm text-slate-500 ml-9">Jangan lari jauh/main bola berjam-jam. Simpan kalori untuk isi daging.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border-l-4 border-green-500 shadow-sm hover-lift cursor-default">
-                        <div class="flex items-center gap-3 mb-1"><span class="text-2xl">🍲</span><h3 class="font-bold text-slate-800">Surplus Kalori</h3></div>
-                        <p class="text-sm text-slate-500 ml-9">Makan LEBIH dari yang kamu bakar. Gunakan tracker di atas.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border-l-4 border-purple-500 shadow-sm hover-lift cursor-default">
-                        <div class="flex items-center gap-3 mb-1"><span class="text-2xl">⏱️</span><h3 class="font-bold text-slate-800">Tempo Pelan</h3></div>
-                        <p class="text-sm text-slate-500 ml-9">Angkat beban pelan (4 detik turun) agar otot 'terbakar' meski beban ringan.</p>
-                    </div>
-                    <div class="bg-white p-5 rounded-2xl border-l-4 border-red-500 shadow-sm hover-lift cursor-default">
-                        <div class="flex items-center gap-3 mb-1"><span class="text-2xl">🛌</span><h3 class="font-bold text-slate-800">Tidur = Tumbuh</h3></div>
-                        <p class="text-sm text-slate-500 ml-9">Otot HANYA tumbuh saat kamu tidur 8 jam. Jangan begadang.</p>
-                    </div>
-                </div>
+                <div class="w-full h-48 relative"><canvas id="weightChart"></canvas></div>
             </div>
         </section>
 
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-12 text-center border-t border-slate-800">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-2xl font-bold text-white mb-4 tracking-tight">Ecto<span class="text-brand-600">Guide</span></h2>
-            <p class="text-sm max-w-md mx-auto mb-8">Dibuat khusus untuk tipe tubuh Indonesia. Fokus pada kesehatan, kekuatan, dan estetika natural.</p>
-            <p class="text-xs text-slate-600">&copy; 2025 Ectomorph Guide V7. Athletic Fit Edition.</p>
+    <!-- BOTTOM NAV -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-up px-4 py-2 z-50 md:max-w-md md:mx-auto">
+        <div class="flex justify-between items-center">
+            <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center justify-center w-16 p-1 text-slate-400">
+                <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">Jadwal</span>
+            </button>
+            <button onclick="switchTab('workout')" class="nav-btn flex flex-col items-center justify-center w-16 p-1 text-slate-400">
+                <i class="fas fa-dumbbell text-xl mb-1"></i><span class="text-[10px] font-bold">Latihan</span>
+            </button>
+            <div class="relative -top-6">
+                <button onclick="switchTab('food')" class="nav-btn flex items-center justify-center w-14 h-14 bg-brand-600 text-white rounded-full shadow-lg border-4 border-white transform active:scale-95 transition">
+                    <i class="fas fa-utensils text-xl"></i>
+                </button>
+            </div>
+            <button onclick="switchTab('progress')" class="nav-btn flex flex-col items-center justify-center w-16 p-1 text-slate-400">
+                <i class="fas fa-user-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Profil</span>
+            </button>
         </div>
-    </footer>
+    </nav>
 
-    <!-- LOGIC -->
+    <!-- TOAST CONTAINER -->
+    <div id="toast-container"></div>
+
+    <!-- LOGIC JS -->
     <script>
-        // --- GEMINI AI ---
-        const apiKey = "AIzaSyC7-7vIa8Fid87Z-NvCzeggVe7Iz5db_Zo"; 
-        async function callGemini(prompt) {
-            if(!apiKey) { alert("API Key missing (Isi di kode)."); return "Error"; }
-            const btnText = document.getElementById('recipe-btn-text') || document.getElementById('analyze-btn-text');
-            try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                });
-                const data = await res.json();
-                return data.candidates[0].content.parts[0].text;
-            } catch(e) { console.error(e); return "Maaf, AI sibuk."; }
+        // === NAVIGASI ===
+        function switchTab(tabName) {
+            document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active-section'));
+            document.getElementById(`${tabName}-section`).classList.add('active-section');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            const map = {'home':0, 'workout':1, 'food':2, 'progress':3};
+            const btns = document.querySelectorAll('.nav-btn');
+            if(tabName !== 'food') btns[map[tabName] > 1 ? map[tabName] : map[tabName]].classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        async function generateRecipe() {
-            const input = document.getElementById('recipe-ingredients').value;
-            if(!input) return alert("Isi bahan dulu!");
-            document.getElementById('recipe-loader').classList.remove('hidden');
-            const res = await callGemini(`Buatkan 1 resep masakan Indonesia tinggi kalori untuk pemula (ectomorph) yang ingin badan berisi dari bahan: ${input}. Fokus rasa enak dan mudah. Format Markdown.`);
-            document.getElementById('recipe-loader').classList.add('hidden');
-            document.getElementById('recipe-result').innerHTML = marked.parse(res);
-            document.getElementById('recipe-result').classList.remove('hidden');
+        // === STREAK COUNTER (NEW) ===
+        function checkStreak() {
+            const today = new Date().toDateString();
+            let lastLogin = localStorage.getItem('lastLogin');
+            let streak = parseInt(localStorage.getItem('streakCount')) || 1;
+
+            if (lastLogin !== today) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastLogin === yesterday.toDateString()) {
+                    streak++;
+                } else {
+                    streak = 1; // Reset if broken
+                }
+                localStorage.setItem('lastLogin', today);
+                localStorage.setItem('streakCount', streak);
+            }
+            document.getElementById('streak-count').innerText = streak;
         }
 
-        async function analyzePlate() {
-            if(plate.length===0) return alert("Piring kosong!");
-            document.getElementById('analyze-loader').classList.remove('hidden');
-            const list = plate.map(i=>`${i.name}`).join(", ");
-            const res = await callGemini(`Analisis menu ini: ${list} (Total ${consumedCalories} kkal). Target ${targetCalories||2500}. Apakah cukup untuk mengisi lengan kurus? Saran murah? Format Markdown.`);
-            document.getElementById('analyze-loader').classList.add('hidden');
-            document.getElementById('analyze-result').innerHTML = marked.parse(res);
-            document.getElementById('analyze-result').classList.remove('hidden');
-        }
-
-        // --- FOOD DATA ---
-        const foodDB = [
-            { id: 1, name: 'Nasi Putih (Sedang)', cal: 204, cat: 'karbo', unit: '1 piring' },
-            { id: 2, name: 'Nasi Putih (Besar)', cal: 350, cat: 'karbo', unit: '1 piring penuh' },
-            { id: 3, name: 'Mie Instan Goreng', cal: 380, cat: 'karbo', unit: '1 bks' },
-            { id: 4, name: 'Roti Tawar', cal: 80, cat: 'karbo', unit: '1 lbr' },
-            { id: 5, name: 'Telur Rebus', cal: 78, cat: 'lauk', unit: '1 butir' },
-            { id: 6, name: 'Telur Dadar (Minyak)', cal: 110, cat: 'lauk', unit: '1 butir' },
-            { id: 7, name: 'Ayam Goreng', cal: 260, cat: 'lauk', unit: '1 ptg' },
-            { id: 8, name: 'Tempe Goreng', cal: 80, cat: 'lauk', unit: '1 ptg' },
-            { id: 9, name: 'Tahu Goreng', cal: 60, cat: 'lauk', unit: '1 ptg' },
-            { id: 10, name: 'Sayur Asem', cal: 80, cat: 'sayur', unit: '1 mangkok' },
-            { id: 11, name: 'Tumis Kangkung', cal: 120, cat: 'sayur', unit: '1 porsi' },
-            { id: 12, name: 'Pisang', cal: 105, cat: 'sayur', unit: '1 buah' },
-            { id: 13, name: 'Susu Full Cream', cal: 150, cat: 'jajan', unit: '1 gelas' },
-            { id: 14, name: 'Gorengan', cal: 140, cat: 'jajan', unit: '1 buah' },
-            { id: 15, name: 'Es Teh Manis', cal: 90, cat: 'jajan', unit: '1 gelas' },
-            { id: 16, name: 'Nasi Uduk', cal: 450, cat: 'karbo', unit: '1 bks' },
-            { id: 17, name: 'Bubur Ayam', cal: 250, cat: 'karbo', unit: '1 mangkok' },
-            { id: 18, name: 'Sate Ayam', cal: 35, cat: 'lauk', unit: '1 tusuk' },
-            { id: 19, name: 'Alpukat', cal: 320, cat: 'sayur', unit: '1 buah' },
-            { id: 20, name: 'Martabak Manis', cal: 300, cat: 'jajan', unit: '1 ptg' }
-        ];
-
-        let plate = [], consumedCalories = 0, targetCalories = 0;
-
-        function renderFoodList(items) {
-            const c = document.getElementById('food-list'); c.innerHTML = '';
-            if(items.length === 0) c.innerHTML = '<div class="text-center text-slate-400 py-4">Tidak ditemukan.</div>';
-            items.forEach(i => {
-                const d = document.createElement('div');
-                d.className = 'flex justify-between items-center bg-white p-3 border border-slate-100 rounded-xl hover:border-emerald-400 hover:shadow-md cursor-pointer transition group';
-                d.innerHTML = `<div><div class="font-bold text-sm text-slate-700 group-hover:text-emerald-700">${i.name}</div><div class="text-xs text-slate-400">${i.unit}</div></div><div class="flex items-center gap-2"><span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">${i.cal}</span><button onclick="addToPlate(${i.id})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 w-8 h-8 rounded-full flex items-center justify-center font-bold transition">+</button></div>`;
-                c.appendChild(d);
-            });
-        }
-        function filterCategory(cat, btn) {
-            if(btn) { document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('bg-emerald-100','text-emerald-700','active')); document.querySelectorAll('.cat-btn').forEach(b=>b.classList.add('bg-slate-100','text-slate-600')); btn.classList.remove('bg-slate-100','text-slate-600'); btn.classList.add('bg-emerald-100','text-emerald-700','active'); }
-            const q = document.getElementById('food-search').value.toLowerCase();
-            renderFoodList(foodDB.filter(i => i.name.toLowerCase().includes(q) && (cat==='all' || i.cat===cat)));
-        }
-        function filterFood() { filterCategory(document.querySelector('.cat-btn.active')?.innerText.toLowerCase() === 'semua' ? 'all' : document.querySelector('.cat-btn.active')?.innerText.toLowerCase().includes('karbo') ? 'karbo' : document.querySelector('.cat-btn.active')?.innerText.toLowerCase().includes('lauk') ? 'lauk' : 'all', null); }
-        function addToPlate(id) { plate.push({...foodDB.find(f=>f.id===id), uuid: Date.now()}); updatePlate(); }
-        function updatePlate() {
-            const c = document.getElementById('daily-log'); c.innerHTML=''; consumedCalories=0;
-            if(plate.length===0) c.innerHTML = '<div class="text-center text-slate-400 text-sm py-10 italic">Belum ada makanan.<br>Klik (+) untuk menambah.</div>';
-            plate.forEach(i => { consumedCalories+=i.cal; c.innerHTML+=`<div class="flex justify-between text-sm bg-white p-2 mb-1 border border-slate-100 rounded-lg shadow-sm"><span>${i.name}</span><div class="flex gap-2 items-center"><span class="text-xs text-slate-400">${i.cal}</span><button onclick="plate=plate.filter(p=>p.uuid!=${i.uuid});updatePlate()" class="text-red-400 hover:text-red-600 font-bold px-1">×</button></div></div>`; });
-            document.getElementById('total-display').innerText = consumedCalories;
-            document.getElementById('eaten-val').innerText = consumedCalories;
-            document.getElementById('ai-status-cal').innerText = consumedCalories;
-            if(targetCalories>0) document.getElementById('calorie-bar').style.width = Math.min((consumedCalories/targetCalories)*100, 100) + '%';
-        }
-        function clearPlate(){ plate=[]; updatePlate(); }
-
-        // --- TOOLS ---
-        function calculateCalories() {
-            const w = document.getElementById('calc-weight').value, h = document.getElementById('calc-height').value, a = document.getElementById('calc-age').value, act = document.getElementById('calc-activity').value;
-            targetCalories = Math.round(((10*w)+(6.25*h)-(5*a)+5)*act + 500);
-            document.getElementById('calc-result').classList.remove('hidden');
-            document.getElementById('target-cal').innerText = targetCalories;
-            document.getElementById('goal-val').innerText = targetCalories;
-            updatePlate();
-        }
-
-        // --- CHART & TRACKER ---
-        let weightChart, scheduleChart;
-        function initCharts() {
-            weightChart = new Chart(document.getElementById('weightChart'), {
-                type: 'line', data: { labels: ['Awal'], datasets: [{ label: 'BB (kg)', data: [30], borderColor: '#f97316', backgroundColor: 'rgba(249, 115, 22, 0.1)', fill: true, tension: 0.4 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
-            });
-            scheduleChart = new Chart(document.getElementById('scheduleChart'), {
-                type: 'bar', data: { 
-                    labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
-                    datasets: [{ label: 'Intensitas', data: [80, 10, 70, 10, 80, 30, 10], backgroundColor: ['#ea580c','#22c55e','#ea580c','#22c55e','#ea580c','#eab308','#22c55e'], borderRadius: 6 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } }
-            });
-        }
-        function addWeightLog() {
-            const d = document.getElementById('tracker-date').value, w = document.getElementById('tracker-weight').value;
-            if(d&&w) { weightChart.data.labels.push(d); weightChart.data.datasets[0].data.push(w); weightChart.update(); }
-        }
-        function resetData() { if(confirm('Reset?')) { weightChart.data.labels=['Awal']; weightChart.data.datasets[0].data=[30]; weightChart.update(); } }
-
-        // --- SCHEDULE & WORKOUT (WITH ARM FOCUS) ---
+        // === 1. JADWAL (LAMA) ===
         const scheduleData = {
-            'Senin': { act: 'Latihan A (Atas + Lengan)', desc: 'Fokus Dada, Bahu, dan Penebalan Lengan (Tricep).' },
-            'Selasa': { act: 'Istirahat Total', desc: 'Fokus makan banyak. Otot tumbuh hari ini.' },
-            'Rabu': { act: 'Latihan B (Kaki + Forearm)', desc: 'Kaki & Lengan Bawah (untuk pergelangan tangan).' },
-            'Kamis': { act: 'Istirahat Total', desc: 'Simpan energimu.' },
-            'Jumat': { act: 'Latihan A (Ulang)', desc: 'Tambah repetisi kalau kuat.' },
-            'Sabtu': { act: 'Istirahat Aktif', desc: 'Jalan santai.' },
-            'Minggu': { act: 'Istirahat Total', desc: 'Tidur siang.' }
+            'Sen': { act: 'Latihan A (Atas)', desc: 'Fokus intensitas tinggi.', color: '#ea580c' },
+            'Sel': { act: 'Istirahat Total', desc: 'Waktunya otot tumbuh.', color: '#22c55e' },
+            'Rab': { act: 'Latihan B (Bawah)', desc: 'Latihan Kaki.', color: '#ea580c' },
+            'Kam': { act: 'Istirahat Total', desc: 'Simpan energimu.', color: '#22c55e' },
+            'Jum': { act: 'Latihan C (Lengan)', desc: 'Spesial membesarkan lengan.', color: '#ea580c' },
+            'Sab': { act: 'Istirahat Aktif', desc: 'Jalan santai.', color: '#eab308' },
+            'Min': { act: 'Istirahat Total', desc: 'Persiapan.', color: '#22c55e' }
         };
-        function initScheduleBtns() {
-            const c = document.getElementById('schedule-buttons');
-            Object.keys(scheduleData).forEach((day, i) => {
-                const b = document.createElement('button');
-                b.className = `p-2 rounded-lg text-xs font-bold border transition ${i===0?'bg-brand-600 text-white border-brand-600':'bg-white text-slate-500 hover:bg-orange-50 border-slate-200'}`;
-                b.innerText = day.substr(0,3);
-                b.onclick = () => {
-                    Array.from(c.children).forEach(x=>x.className='p-2 rounded-lg text-xs font-bold border bg-white text-slate-500 hover:bg-orange-50 border-slate-200');
-                    b.className = 'p-2 rounded-lg text-xs font-bold border bg-brand-600 text-white border-brand-600 shadow-md';
-                    document.getElementById('detail-day').innerText = day;
-                    document.getElementById('detail-activity').innerText = scheduleData[day].act;
-                    document.getElementById('detail-desc').innerText = scheduleData[day].desc;
-                };
-                c.appendChild(b);
+        function initSchedule() {
+            const ctx = document.getElementById('energyChart').getContext('2d');
+            new Chart(ctx, { type: 'bar', data: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], datasets: [{ label: 'Intensitas', data: [90, 20, 90, 20, 80, 40, 10], backgroundColor: ['#ea580c', '#22c55e', '#ea580c', '#22c55e', '#ea580c', '#eab308', '#22c55e'], borderRadius: 6 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false } } } } });
+            const btnContainer = document.getElementById('day-buttons');
+            Object.keys(scheduleData).forEach((day, index) => {
+                btnContainer.innerHTML += `<button onclick="updateDailyCard('${day}', this)" class="day-btn flex-shrink-0 w-10 h-10 rounded-xl text-xs font-bold border ${index===0 ? 'bg-brand-600 text-white border-brand-600 shadow-md' : 'bg-white text-slate-500 border-slate-200'} transition">${day}</button>`;
+            });
+        }
+        function updateDailyCard(day, btnElement) {
+            document.querySelectorAll('.day-btn').forEach(b => b.className = 'day-btn flex-shrink-0 w-10 h-10 rounded-xl text-xs font-bold border bg-white text-slate-500 border-slate-200 transition');
+            btnElement.className = 'day-btn flex-shrink-0 w-10 h-10 rounded-xl text-xs font-bold border bg-brand-600 text-white border-brand-600 shadow-md transition';
+            const data = scheduleData[day];
+            document.getElementById('day-title').innerText = day; document.getElementById('day-activity').innerText = data.act; document.getElementById('day-desc').innerText = data.desc;
+        }
+
+        // === 2. LATIHAN (TIMER + CUSTOM) ===
+        let timerInterval;
+        function startTimer(seconds) {
+            clearInterval(timerInterval);
+            let timeLeft = seconds;
+            const display = document.getElementById('timer-display');
+            display.innerText = `00:${timeLeft}`;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                display.innerText = `00:${timeLeft < 10 ? '0'+timeLeft : timeLeft}`;
+                if (timeLeft <= 0) { clearInterval(timerInterval); alert("Istirahat Selesai!"); display.innerText = "00:00"; }
+            }, 1000);
+        }
+        function stopTimer() { clearInterval(timerInterval); document.getElementById('timer-display').innerText = "00:00"; }
+
+        let workouts = {
+            'A': [{ n: 'Push Up', s: '3 Set x Max', d: 'Dada & Tricep.' }, { n: 'Dumbbell Row', s: '3 Set x 12', d: 'Punggung.' }, { n: 'Overhead Press', s: '3 Set x 10', d: 'Bahu.' }],
+            'B': [{ n: 'Squat', s: '3 Set x 12', d: 'Paha.' }, { n: 'Lunges', s: '3 Set x 10', d: 'Kaki.' }],
+            'C': [{ n: 'Diamond Push Up', s: '3 Set x 8', d: 'Tricep Fokus.' }, { n: 'Hammer Curl', s: '3 Set x 12', d: 'Lengan Samping.' }, { n: 'Wrist Curl', s: '3 Set x 20', d: 'Forearm.' }]
+        };
+        let customPlan = JSON.parse(localStorage.getItem('customWorkouts')) || [];
+
+        function renderWorkout(plan) {
+            ['a','b','c','d'].forEach(p => {
+                const btn = document.getElementById(`btn-${p}`);
+                if(p === plan.toLowerCase()) btn.className = "flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap transition-all bg-white text-brand-600 shadow-sm border border-brand-100";
+                else btn.className = "flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50";
+            });
+            const cwArea = document.getElementById('custom-workout-area');
+            const armTip = document.getElementById('arm-tip');
+            
+            if(plan === 'D') { cwArea.classList.remove('hidden'); armTip.classList.add('hidden'); renderWorkoutCards(customPlan, true); }
+            else { cwArea.classList.add('hidden'); armTip.classList.toggle('hidden', plan !== 'C'); renderWorkoutCards(workouts[plan], false); }
+        }
+
+        function renderWorkoutCards(list, isCustom) {
+            const c = document.getElementById('workout-container'); c.innerHTML = '';
+            if(list.length === 0 && isCustom) { c.innerHTML = '<div class="text-center text-xs text-slate-400 italic p-4">Belum ada gerakan buatan sendiri.</div>'; return; }
+            list.forEach((w, idx) => {
+                let checks = ''; for(let i=0; i<3; i++) checks += `<div class="workout-check cursor-pointer" onclick="this.classList.toggle('done')"><i class="fas fa-check text-[10px]"></i></div>`;
+                let deleteBtn = isCustom ? `<button onclick="deleteCustom(${idx})" class="text-red-400 text-[10px] ml-2 font-bold">Hapus</button>` : '';
+                c.innerHTML += `<div class="glass-card bg-white p-4"><div class="flex justify-between items-start mb-2"><div><h4 class="font-bold text-slate-800">${w.n} ${deleteBtn}</h4><span class="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${w.s}</span></div><button onclick="this.parentElement.nextElementSibling.classList.toggle('hidden')" class="text-brand-500 text-xs font-bold bg-brand-50 px-2 py-1 rounded">Cara <i class="fas fa-chevron-down ml-1"></i></button></div><div class="hidden text-xs text-slate-600 bg-slate-50 p-2 mb-3 rounded border border-slate-100 leading-relaxed">${w.d}</div><div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="text-[10px] font-bold text-slate-400 uppercase">Set:</span><div class="flex gap-2">${checks}</div></div></div>`;
             });
         }
 
-        const workouts = {
-            'A': [ 
-                {n:'Push Up (Dada)', s:'3 Set x Failure', i:'💪', desc: 'Melatih dada dan tricep (lengan belakang).<br>1. Tangan selebar bahu.<br>2. Badan lurus.<br>3. Turun sampai dada hampir lantai.<br>4. Dorong.'}, 
-                {n:'Dumbbell Row (Punggung)', s:'3 Set x 12 Reps', i:'🔙', desc: 'Melatih punggung agar badan tegap (V-shape).<br>1. Bungkuk 45 derajat.<br>2. Tarik beban ke pinggang.<br>3. Tahan 1 detik, turun pelan.'}, 
-                {n:'Overhead Press (Bahu)', s:'3 Set x 10 Reps', i:'🏋️', desc: 'Melatih bahu agar terlihat lebar.<br>1. Dorong beban dari bahu ke atas kepala.<br>2. Turunkan pelan-pelan.'},
-                {n:'Tricep Extension (Lengan)', s:'3 Set x 15 Reps', i:'🔥', desc: '<strong>Penutup Lengan (Wajib):</strong><br>1. Pegang 1 barbel di atas kepala dengan dua tangan.<br>2. Tekuk siku ke belakang kepala.<br>3. Luruskan tangan ke atas.<br><em>Ini kunci mengisi lengan baju!</em>'} 
-            ],
-            'B': [ 
-                {n:'Goblet Squat (Paha)', s:'3 Set x 12 Reps', i:'🦵', desc: 'Melatih kaki (otot terbesar = hormon pertumbuhan naik).<br>1. Peluk barbel di dada.<br>2. Jongkok seperti duduk.<br>3. Berdiri.'}, 
-                {n:'Lunges (Kaki)', s:'3 Set x 10/kaki', i:'🏃', desc: 'Melatih keseimbangan dan paha.<br>1. Langkah jauh ke depan.<br>2. Tekuk lutut belakang sampai hampir lantai.'}, 
-                {n:'Wrist Curl (Forearm)', s:'3 Set x 20 Reps', i:'🖐️', desc: '<strong>Untuk Pergelangan Tangan:</strong><br>1. Duduk, taruh lengan di paha, telapak tangan gantung keluar lutut.<br>2. Pegang beban, gerakkan pergelangan tangan naik turun.<br><em>Membantu menyamarkan tulang pergelangan.</em>'},
-                {n:'Farmer Walk (Genggaman)', s:'3 x 45 Detik', i:'👜', desc: '1. Pegang beban berat di kiri kanan.<br>2. Jalan keliling ruangan sambil genggam kuat.<br>Melatih otot forearm dan bahu.'} 
-            ]
-        };
+        function addCustomWorkout() {
+            const n = document.getElementById('cw-name').value, s = document.getElementById('cw-sets').value, r = document.getElementById('cw-reps').value, d = document.getElementById('cw-desc').value;
+            if(n && s && r && d) { customPlan.push({ n: n, s: `${s} x ${r}`, d: d }); localStorage.setItem('customWorkouts', JSON.stringify(customPlan)); renderWorkout('D'); showToast("Gerakan tersimpan!"); document.getElementById('cw-name').value=''; document.getElementById('cw-desc').value=''; } else { showToast("Isi semua kolom!", true); }
+        }
+        function deleteCustom(idx) { if(confirm('Hapus gerakan ini?')) { customPlan.splice(idx, 1); localStorage.setItem('customWorkouts', JSON.stringify(customPlan)); renderWorkout('D'); } }
+
+        // === 3. MAKANAN & AIR ===
+        const apiKey = "AIzaSyC7-7vIa8Fid87Z-NvCzeggVe7Iz5db_Zo";
+        const localFoodDB = [{ name: 'Nasi Putih', cal: 204 }, { name: 'Telur Rebus', cal: 78 }, { name: 'Dada Ayam', cal: 165 }, { name: 'Mie Instan', cal: 380 }];
+        let plate = JSON.parse(localStorage.getItem('plate')) || [];
+        let targetCal = localStorage.getItem('targetCal') || 2500;
+        let waterCount = localStorage.getItem('waterCount') || 0;
+
+        async function searchWithAI() {
+            const query = document.getElementById('food-search').value;
+            if(!query) return showToast("Ketik nama makanan!", true);
+            document.getElementById('ai-loading').classList.remove('hidden');
+            try {
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `Estimasi kalori "${query}" JSON format: {"name": "Nama", "cal": 123}` }] }] }) });
+                const data = await res.json();
+                const result = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());
+                localFoodDB.unshift(result); renderFoodList(); showToast(`Ditemukan: ${result.name}`);
+            } catch(e) { showToast("Gagal. Coba manual.", true); }
+            document.getElementById('ai-loading').classList.add('hidden');
+        }
+
+        function renderFoodList() { const l = document.getElementById('food-list'); l.innerHTML = ''; localFoodDB.forEach(i => l.innerHTML += `<div onclick="addToPlate('${i.name}',${i.cal})" class="flex justify-between p-2 bg-white border border-slate-100 rounded-lg mb-2 cursor-pointer hover:border-brand-500"><span class="text-xs font-bold text-slate-700">${i.name}</span><span class="text-xs font-bold text-brand-600">${i.cal}</span></div>`); }
+        function addToPlate(n,c){ plate.push({n,c,id:Date.now()}); updatePlate(); showToast("Masuk Piring!"); }
+        function removeFromPlate(id){ plate = plate.filter(p=>p.id!==id); updatePlate(); }
+        function resetPlate(){ if(confirm("Reset?")){ plate=[]; updatePlate(); } }
         
-        function renderWorkout(p) {
-            document.getElementById('btn-plan-a').className = p==='A' ? 'flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-md bg-brand-600 text-white ring-2 ring-orange-300' : 'flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-sm bg-white text-slate-600 hover:bg-slate-50';
-            document.getElementById('btn-plan-b').className = p==='B' ? 'flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-md bg-brand-600 text-white ring-2 ring-orange-300' : 'flex-shrink-0 px-6 py-3 rounded-xl font-bold transition-all shadow-sm bg-white text-slate-600 hover:bg-slate-50';
-            const c = document.getElementById('workout-content'); c.innerHTML = '';
-            workouts[p].forEach((w, idx) => {
-                c.innerHTML += `
-                <div class="glass-card bg-white p-6 rounded-2xl hover-lift transition">
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="bg-gradient-to-br from-orange-100 to-amber-100 w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-inner">${w.i}</div>
-                        <div>
-                            <div class="font-bold text-lg text-slate-800">${w.n}</div>
-                            <div class="text-xs font-bold text-orange-600 bg-orange-50 px-2 py-1 rounded inline-block mt-1">${w.s}</div>
-                        </div>
-                    </div>
-                    <button onclick="document.getElementById('desc-${p}-${idx}').classList.toggle('open')" class="w-full text-left text-xs font-bold text-slate-500 hover:text-brand-600 flex items-center gap-1 transition bg-slate-50 p-2 rounded-lg justify-between group">
-                        <span>▶️ Lihat Caranya</span>
-                        <span class="group-hover:translate-x-1 transition">→</span>
-                    </button>
-                    <div id="desc-${p}-${idx}" class="details-expand text-sm text-slate-600 bg-slate-50/50 rounded-b-lg border-x border-b border-slate-100 p-3 leading-relaxed">
-                        ${w.desc}
-                    </div>
-                </div>`;
-            });
+        // FIX INPUT MANUAL LOGIC
+        function addManual(){ 
+            const n = document.getElementById('man-name').value;
+            const c = parseInt(document.getElementById('man-cal').value); 
+            if(n && c){ 
+                addToPlate(n, c); 
+                document.getElementById('manual-form').classList.add('hidden');
+                document.getElementById('man-name').value = '';
+                document.getElementById('man-cal').value = '';
+            } else {
+                showToast("Isi nama & kalori!", true);
+            }
         }
         
-        let timerInt, time=90;
-        function startTimer() { clearInterval(timerInt); timerInt=setInterval(()=>{time--; if(time<0){clearInterval(timerInt);alert('Selesai!');resetTimer();return;} const m=Math.floor(time/60).toString().padStart(2,'0'),s=(time%60).toString().padStart(2,'0'); document.getElementById('timer-display').innerText=`${m}:${s}`;},1000); }
-        function resetTimer() { clearInterval(timerInt); time=90; document.getElementById('timer-display').innerText="01:30"; }
+        function updatePlate() {
+            const c = document.getElementById('my-plate'); c.innerHTML=''; let t=0;
+            plate.forEach(p => { t+=p.c; c.innerHTML+=`<div class="flex justify-between items-center p-2 bg-slate-50 rounded-lg text-xs"><span class="truncate w-32">${p.n}</span><div class="flex gap-2 font-bold"><span>${p.c}</span><span onclick="removeFromPlate(${p.id})" class="text-red-500 cursor-pointer">x</span></div></div>`; });
+            document.getElementById('total-cal-page').innerText = t; document.getElementById('dash-cal').innerText = t;
+            document.getElementById('dash-target').innerText = targetCal; document.getElementById('target-display').innerText = targetCal;
+            document.getElementById('progress-bar').style.width = Math.min((t/targetCal)*100, 100)+'%';
+            localStorage.setItem('plate', JSON.stringify(plate));
+        }
+
+        function addWater() {
+            waterCount++;
+            document.getElementById('water-count').innerText = waterCount;
+            localStorage.setItem('waterCount', waterCount);
+            showToast("+1 Gelas Air");
+        }
+
+        // === 4. KALKULATOR & GRAFIK ===
+        function calculateTarget() {
+            const bb = parseFloat(document.getElementById('bb').value);
+            const tb = parseFloat(document.getElementById('tb').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const act = parseFloat(document.getElementById('act').value);
+            if(bb && tb && age && act) {
+                let bmr = (10 * bb) + (6.25 * tb) - (5 * age);
+                bmr += (gender === 'male') ? 5 : -161;
+                targetCal = Math.round((bmr * act) + 500);
+                localStorage.setItem('targetCal', targetCal);
+                document.getElementById('result-cal').innerText = targetCal + " kkal";
+                document.getElementById('target-result').classList.remove('hidden');
+                updatePlate();
+            } else { showToast("Isi semua data!", true); }
+        }
+
+        let chart;
+        function initChart() {
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            const l = JSON.parse(localStorage.getItem('wLabels'))||[], d = JSON.parse(localStorage.getItem('wData'))||[];
+            if(d.length) document.getElementById('dash-weight').innerText = d[d.length-1];
+            chart = new Chart(ctx, { type:'line', data:{labels:l, datasets:[{data:d, borderColor:'#f97316', tension:0.4, fill:true, backgroundColor:'rgba(249,115,22,0.1)'}]}, options:{responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{x:{display:false}}} });
+        }
+        function addWeightEntry(){ 
+            const d=document.getElementById('chart-date').value, w=document.getElementById('chart-weight').value;
+            if(d&&w){ chart.data.labels.push(d); chart.data.datasets[0].data.push(w); chart.update(); localStorage.setItem('wLabels',JSON.stringify(chart.data.labels)); localStorage.setItem('wData',JSON.stringify(chart.data.datasets[0].data)); document.getElementById('dash-weight').innerText=w; showToast("BB Disimpan!"); }
+        }
+
+        function showToast(msg, isError = false) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast-item ${isError ? 'error' : ''}`;
+            toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'}"></i> <span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => { toast.style.animation = 'fadeOut 0.3s ease-out forwards'; setTimeout(() => { toast.remove(); }, 300); }, 3000);
+        }
 
         window.onload = function() {
-            filterCategory('all', document.querySelector('.cat-btn'));
-            initCharts();
-            initScheduleBtns();
-            renderWorkout('A');
-            document.getElementById('tracker-date').valueAsDate = new Date();
+            checkStreak(); // Load Streak
+            initSchedule(); renderFoodList(); renderWorkout('A'); updatePlate(); initChart();
+            document.getElementById('chart-date').valueAsDate = new Date();
+            document.getElementById('water-count').innerText = waterCount;
+            switchTab('home');
         };
     </script>
 </body>
-                                </html>
+</html>
