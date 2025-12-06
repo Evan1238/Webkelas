@@ -585,8 +585,8 @@
     document.getElementById('ai-btn').disabled = true;
 
     try {
-        // PERUBAHAN: Panggil API/gemini (server kita sendiri), bukan Google langsung
-        const res = await fetch('/API/gemini', { 
+        // PERUBAHAN: Panggil api/gemini (server kita sendiri), bukan Google langsung
+        const res = await fetch('/api/gemini', { 
             method: 'POST', 
             headers: {'Content-Type': 'application/json'}, 
             body: JSON.stringify({ query: query }) // Kita cuma kirim nama makanannya aja
