@@ -570,7 +570,7 @@
         function deleteCustom(idx) { if(confirm('Hapus gerakan ini?')) { customPlan.splice(idx, 1); localStorage.setItem('customWorkouts', JSON.stringify(customPlan)); renderWorkout('D'); } }
 
         // === MAKANAN & AIR ===
-        const apiKey = ""; 
+        const apiKey = "AIzaSyB6hsL1-JMOZLgxDwlASaVGFc8EOmKVVnE"; 
 
         const localFoodDB = [{ name: 'Nasi Putih', cal: 204 }, { name: 'Telur Rebus', cal: 78 }, { name: 'Dada Ayam', cal: 165 }, { name: 'Mie Instan', cal: 380 }];
         let plate = JSON.parse(localStorage.getItem('plate')) || [];
