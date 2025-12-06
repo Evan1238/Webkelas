@@ -2,7 +2,7 @@
 <html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>EctoGuide V17: Ultimate Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -28,8 +28,8 @@
             background-color: #f8fafc;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 16px 16px;
-            /* FIX: Extra padding bottom agar konten tidak ketutup tombol tengah */
-            padding-bottom: 140px; 
+            /* FIX: Extra padding bottom agar konten tidak ketutup tombol tengah & Safe Area */
+            padding-bottom: calc(140px + env(safe-area-inset-bottom)); 
             overflow-x: hidden;
         }
         .glass-card {
@@ -74,7 +74,6 @@
 </head>
 <body class="text-slate-700 font-sans md:max-w-md md:mx-auto md:shadow-2xl md:min-h-screen md:bg-white">
 
-    <!-- HEADER -->
     <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md pt-6 pb-4 px-6 flex justify-between items-center border-b border-slate-100">
         <div>
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider" id="header-subtitle">Halo Pejuang,</p>
@@ -89,7 +88,6 @@
 
     <main class="p-5 space-y-6 relative z-0">
 
-        <!-- ================= 1. JADWAL (HOME) ================= -->
         <section id="home-section" class="app-section active-section space-y-6">
             <div class="glass-card p-5 bg-gradient-to-br from-brand-500 to-orange-600 text-white relative overflow-hidden">
                 <i class="fas fa-bolt absolute -right-4 -bottom-4 text-8xl opacity-10 rotate-12"></i>
@@ -152,7 +150,6 @@
         </section>
 
 
-        <!-- ================= 2. LATIHAN (WORKOUT + NEW 1RM) ================= -->
         <section id="workout-section" class="app-section space-y-5">
             
             <div class="bg-slate-800 text-white p-4 rounded-2xl sticky top-[80px] z-30 shadow-lg flex justify-between items-center">
@@ -169,7 +166,6 @@
                 </div>
             </div>
 
-            <!-- 1RM CALCULATOR -->
             <div class="glass-card p-4 bg-purple-50 border border-purple-100 flex flex-col gap-2 relative overflow-hidden">
                 <i class="fas fa-dumbbell absolute -right-3 -top-3 text-6xl text-purple-200 opacity-50 rotate-45"></i>
                 <h3 class="font-bold text-purple-800 text-xs uppercase tracking-wide relative z-10">Kalkulator Kekuatan (1RM)</h3>
@@ -216,7 +212,6 @@
         </section>
 
 
-        <!-- ================= 3. MAKANAN (INPUT FIXED & AI) ================= -->
         <section id="food-section" class="app-section space-y-5">
             <div class="glass-card p-5 bg-white sticky top-[80px] z-30">
                  <div class="flex justify-between items-end mb-3">
@@ -273,7 +268,6 @@
         </section>
 
 
-        <!-- ================= 4. PROGRESS (WITH NEW BODY MEASUREMENT) ================= -->
         <section id="progress-section" class="app-section space-y-6">
             <div class="glass-card p-5 bg-white">
                 <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
@@ -321,7 +315,6 @@
                 </div>
             </div>
 
-            <!-- NEW FEATURE: BODY MEASUREMENTS -->
             <div class="glass-card p-5 bg-cyan-50 border border-cyan-100 relative">
                 <i class="fas fa-ruler-combined absolute top-4 right-4 text-cyan-200 text-4xl opacity-50"></i>
                 <h3 class="font-bold text-cyan-800 mb-4 flex items-center gap-2 relative z-10"><i class="fas fa-child"></i> Ukur Lingkar Otot</h3>
@@ -352,7 +345,6 @@
             </div>
         </section>
 
-        <!-- ================= 5. SETTINGS & SLEEP TRACKER ================= -->
         <section id="settings-section" class="app-section space-y-6">
             
             <div class="glass-card p-5 bg-indigo-50 border border-indigo-100 relative overflow-hidden">
@@ -401,11 +393,11 @@
 
     </main>
 
-    <!-- BOTTOM NAV: FIXED CENTERED BUTTON -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-up h-16 z-50 md:max-w-md md:mx-auto">
-        <div class="relative flex justify-between items-center h-full px-6">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-up z-50 md:max-w-md md:mx-auto" 
+         style="padding-bottom: env(safe-area-inset-bottom, 20px); height: auto;">
+        
+        <div class="relative flex justify-between items-center h-16 px-6">
             
-            <!-- Left Side -->
             <div class="flex gap-8">
                 <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center justify-center w-10 cursor-pointer">
                     <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">Home</span>
@@ -415,19 +407,16 @@
                 </button>
             </div>
 
-            <!-- Absolute Center Button -->
             <div class="absolute left-1/2 transform -translate-x-1/2 -top-6">
                 <button onclick="switchTab('food')" class="nav-btn flex items-center justify-center w-14 h-14 bg-brand-600 text-white rounded-full shadow-lg border-4 border-white transition transform active:scale-95 shadow-orange-500/30 cursor-pointer">
                     <i class="fas fa-utensils text-xl"></i>
                 </button>
             </div>
 
-            <!-- Right Side -->
             <div class="flex gap-8">
                 <button onclick="switchTab('progress')" class="nav-btn flex flex-col items-center justify-center w-10 cursor-pointer">
                     <i class="fas fa-user-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Profil</span>
                 </button>
-                <!-- FIXED SET BUTTON: Logic Fixed -->
                 <button onclick="switchTab('settings')" class="nav-btn flex flex-col items-center justify-center w-10 cursor-pointer">
                      <i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Set</span>
                 </button>
@@ -435,10 +424,8 @@
         </div>
     </nav>
 
-    <!-- TOAST CONTAINER -->
     <div id="toast-container"></div>
 
-    <!-- LOGIC JS -->
     <script>
         // === NAVIGASI (FIXED LOGIC) ===
         function switchTab(tabName) {
