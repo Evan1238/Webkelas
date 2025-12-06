@@ -570,53 +570,48 @@
         function deleteCustom(idx) { if(confirm('Hapus gerakan ini?')) { customPlan.splice(idx, 1); localStorage.setItem('customWorkouts', JSON.stringify(customPlan)); renderWorkout('D'); } }
 
         // === MAKANAN & AIR ===
-        const apiKey = "AIzaSyB6hsL1-JMOZLgxDwlASaVGFc8EOmKVVnE"; 
+     
 
         const localFoodDB = [{ name: 'Nasi Putih', cal: 204 }, { name: 'Telur Rebus', cal: 78 }, { name: 'Dada Ayam', cal: 165 }, { name: 'Mie Instan', cal: 380 }];
         let plate = JSON.parse(localStorage.getItem('plate')) || [];
         let targetCal = localStorage.getItem('targetCal') || 2500;
         let waterCount = localStorage.getItem('waterCount') || 0;
-
+        
         async function searchWithAI() {
-            const query = document.getElementById('food-search').value;
-            if(!query) return showToast("Ketik nama makanan!", true);
-            
-            document.getElementById('ai-loading').classList.remove('hidden');
-            document.getElementById('ai-btn').disabled = true;
+    const query = document.getElementById('food-search').value;
+    if(!query) return showToast("Ketik nama makanan!", true);
+    
+    document.getElementById('ai-loading').classList.remove('hidden');
+    document.getElementById('ai-btn').disabled = true;
 
-            try {
-                const payload = { 
-                    contents: [{ 
-                        parts: [{ 
-                            text: `Estimasi kalori untuk "${query}". Return ONLY JSON format: {"name": "FoodName", "cal": 123}. No markdown formatting, no explanation, just the raw JSON object.` 
-                        }] 
-                    }] 
-                };
+    try {
+        // PERUBAHAN: Panggil api/gemini (server kita sendiri), bukan Google langsung
+        const res = await fetch('/api/gemini', { 
+            method: 'POST', 
+            headers: {'Content-Type': 'application/json'}, 
+            body: JSON.stringify({ query: query }) // Kita cuma kirim nama makanannya aja
+        });
 
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { 
-                    method: 'POST', 
-                    headers: {'Content-Type': 'application/json'}, 
-                    body: JSON.stringify(payload) 
-                });
+        if (!res.ok) throw new Error("Gagal mengambil data dari server.");
 
-                if (!res.ok) throw new Error("API Error");
+        const data = await res.json();
+        
+        // Proses datanya sama seperti biasa
+        const textResponse = data.candidates[0].content.parts[0].text;
+        const cleanJson = textResponse.replace(/```json|```/g, '').trim();
+        const result = JSON.parse(cleanJson);
 
-                const data = await res.json();
-                const textResponse = data.candidates[0].content.parts[0].text;
-                const cleanJson = textResponse.replace(/```json|```/g, '').trim();
-                const result = JSON.parse(cleanJson);
-
-                localFoodDB.unshift(result); 
-                renderFoodList(); 
-                showToast(`Ditemukan: ${result.name} (${result.cal} kkal)`);
-            } catch(e) { 
-                console.error(e);
-                showToast("Gagal koneksi ke AI. Coba lagi.", true); 
-            } finally {
-                document.getElementById('ai-loading').classList.add('hidden');
-                document.getElementById('ai-btn').disabled = false;
-            }
-        }
+        localFoodDB.unshift(result); 
+        renderFoodList(); 
+        showToast(`Ditemukan: ${result.name} (${result.cal} kkal)`);
+    } catch(e) { 
+        console.error(e);
+        showToast("Gagal koneksi ke AI. Coba lagi.", true); 
+    } finally {
+        document.getElementById('ai-loading').classList.add('hidden');
+        document.getElementById('ai-btn').disabled = false;
+    }
+}
 
         function renderFoodList() { const l = document.getElementById('food-list'); l.innerHTML = ''; localFoodDB.forEach(i => l.innerHTML += `<div onclick="addToPlate('${i.name}',${i.cal})" class="flex justify-between p-2 bg-white border border-slate-100 rounded-lg mb-2 cursor-pointer hover:border-brand-500"><span class="text-xs font-bold text-slate-700">${i.name}</span><span class="text-xs font-bold text-brand-600">${i.cal}</span></div>`); }
         function addToPlate(n,c){ plate.push({n,c,id:Date.now()}); updatePlate(); showToast("Masuk Piring!"); }
