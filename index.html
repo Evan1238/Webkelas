@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EctoGuide V17: Fixed</title>
+    <title>EctoGuide V17: Ultimate Fix</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -28,7 +28,8 @@
             background-color: #f8fafc;
             background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
             background-size: 16px 16px;
-            padding-bottom: 100px;
+            /* FIX: Extra padding bottom agar konten tidak ketutup tombol tengah */
+            padding-bottom: 140px; 
             overflow-x: hidden;
         }
         .glass-card {
@@ -41,11 +42,15 @@
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        .nav-btn.active { color: #f97316; }
-        .nav-btn.active i { transform: scale(1.1); transition: all 0.2s; }
-        .app-section { display: none; animation: fadeIn 0.3s ease-in-out; }
+        
+        /* FIX: Ensure active class targets color correctly */
+        .nav-btn { transition: all 0.3s ease; color: #94a3b8; } /* Default gray */
+        .nav-btn.active { color: #ea580c !important; } /* Force Orange Color when active */
+        .nav-btn.active i { transform: scale(1.25); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .app-section { display: none; animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .app-section.active-section { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
         .workout-check {
             width: 24px; height: 24px; border-radius: 50%; border: 2px solid #cbd5e1;
@@ -53,7 +58,6 @@
         }
         .workout-check.done { background-color: #22c55e; border-color: #22c55e; color: white; }
 
-        /* TOAST FIX */
         #toast-container {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             z-index: 9999; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px;
@@ -76,7 +80,6 @@
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider" id="header-subtitle">Halo Pejuang,</p>
             <h1 class="text-2xl font-extrabold text-slate-800 leading-tight" id="header-title">EctoGuide V17</h1>
         </div>
-        <!-- FITUR BARU: STREAK COUNTER -->
         <div class="flex items-center gap-2 bg-orange-50 px-3 py-1.5 rounded-full border border-orange-100 shadow-sm">
             <i class="fas fa-fire text-orange-500 animate-pulse"></i>
             <span class="text-sm font-bold text-orange-700" id="streak-count">1</span>
@@ -84,12 +87,10 @@
         </div>
     </header>
 
-    <main class="p-5 space-y-6">
+    <main class="p-5 space-y-6 relative z-0">
 
-        <!-- ================= 1. JADWAL & PRINSIP (HOME) ================= -->
+        <!-- ================= 1. JADWAL (HOME) ================= -->
         <section id="home-section" class="app-section active-section space-y-6">
-            
-            <!-- Summary Card -->
             <div class="glass-card p-5 bg-gradient-to-br from-brand-500 to-orange-600 text-white relative overflow-hidden">
                 <i class="fas fa-bolt absolute -right-4 -bottom-4 text-8xl opacity-10 rotate-12"></i>
                 <div class="relative z-10">
@@ -107,7 +108,6 @@
                 </div>
             </div>
 
-            <!-- Grafik Energi -->
             <div class="glass-card p-4 bg-white">
                 <div class="flex justify-between items-center mb-2">
                     <h3 class="font-bold text-sm text-slate-700">Manajemen Energi</h3>
@@ -116,7 +116,6 @@
                 <div class="h-40 w-full relative"><canvas id="energyChart"></canvas></div>
             </div>
 
-            <!-- Detail Harian -->
             <div class="glass-card p-4 bg-white">
                 <h3 class="font-bold text-sm text-slate-700 mb-3">Detail Harian</h3>
                 <div class="flex gap-2 overflow-x-auto hide-scroll pb-2 mb-3" id="day-buttons"></div>
@@ -127,28 +126,23 @@
                 </div>
             </div>
 
-            <!-- PRINSIP PENTING (GAMBAR v15) -->
             <div class="space-y-3">
                 <h2 class="text-lg font-bold text-slate-800">Prinsip Penting</h2>
-                
                 <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
                     <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-blue-500"></div>
                     <div class="text-2xl mt-1"><i class="fas fa-battery-full text-green-500"></i></div>
                     <div><h4 class="font-bold text-slate-800 text-sm">Hemat Energi</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Jangan lari jauh/main bola berjam-jam. Simpan kalori.</p></div>
                 </div>
-
                 <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
                     <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
                     <div class="text-2xl mt-1">🍲</div>
                     <div><h4 class="font-bold text-slate-800 text-sm">Surplus Kalori</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Makan LEBIH dari yang kamu bakar.</p></div>
                 </div>
-
                 <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
                     <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-purple-500"></div>
                     <div class="text-2xl mt-1"><i class="fas fa-stopwatch text-slate-400"></i></div>
                     <div><h4 class="font-bold text-slate-800 text-sm">Tempo Pelan</h4><p class="text-xs text-slate-500 mt-1 leading-relaxed">Angkat beban pelan (4 detik turun).</p></div>
                 </div>
-
                 <div class="glass-card p-4 bg-white relative overflow-hidden flex gap-4 items-start">
                     <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
                     <div class="text-2xl mt-1"><i class="fas fa-bed text-blue-400"></i></div>
@@ -158,10 +152,9 @@
         </section>
 
 
-        <!-- ================= 2. LATIHAN (WORKOUT + CUSTOM) ================= -->
+        <!-- ================= 2. LATIHAN (WORKOUT + NEW 1RM) ================= -->
         <section id="workout-section" class="app-section space-y-5">
             
-            <!-- REST TIMER -->
             <div class="bg-slate-800 text-white p-4 rounded-2xl sticky top-[80px] z-30 shadow-lg flex justify-between items-center">
                 <div>
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Istirahat Antar Set</p>
@@ -176,7 +169,22 @@
                 </div>
             </div>
 
-            <!-- Selector Plan -->
+            <!-- 1RM CALCULATOR -->
+            <div class="glass-card p-4 bg-purple-50 border border-purple-100 flex flex-col gap-2 relative overflow-hidden">
+                <i class="fas fa-dumbbell absolute -right-3 -top-3 text-6xl text-purple-200 opacity-50 rotate-45"></i>
+                <h3 class="font-bold text-purple-800 text-xs uppercase tracking-wide relative z-10">Kalkulator Kekuatan (1RM)</h3>
+                <p class="text-[10px] text-purple-600 mb-1 relative z-10">Cek kekuatan maksimalmu tanpa resiko cedera.</p>
+                <div class="flex gap-2 relative z-10">
+                    <input id="rm-weight" type="number" placeholder="Beban (kg)" class="w-1/3 p-2 text-xs rounded-lg border border-purple-200 focus:outline-none focus:border-purple-500">
+                    <input id="rm-reps" type="number" placeholder="Reps (x)" class="w-1/3 p-2 text-xs rounded-lg border border-purple-200 focus:outline-none focus:border-purple-500">
+                    <button onclick="calculateOneRM()" class="flex-1 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition">Hitung</button>
+                </div>
+                <div id="rm-result-area" class="hidden mt-1 p-2 bg-white rounded-lg border border-purple-100">
+                    <p class="text-center text-xs text-slate-500">Kekuatan Maksimal (1 Rep):</p>
+                    <p class="text-center text-xl font-extrabold text-purple-600" id="rm-value">0 kg</p>
+                </div>
+            </div>
+
             <div class="flex bg-slate-100 p-1 rounded-2xl overflow-x-auto">
                 <button onclick="renderWorkout('A')" id="btn-a" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap transition-all bg-white text-brand-600 shadow-sm">Plan A</button>
                 <button onclick="renderWorkout('B')" id="btn-b" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50">Plan B</button>
@@ -184,7 +192,6 @@
                 <button onclick="renderWorkout('D')" id="btn-d" class="flex-1 py-2.5 px-3 rounded-xl font-bold text-xs whitespace-nowrap text-slate-500 hover:bg-white/50"><i class="fas fa-plus-circle mr-1"></i>Custom</button>
             </div>
 
-            <!-- Area untuk Plan D (Custom) -->
             <div id="custom-workout-area" class="hidden">
                 <div class="glass-card p-4 bg-orange-50 border border-orange-200 mb-4">
                     <h3 class="font-bold text-brand-700 mb-3 text-sm">Tambah Gerakan Baru</h3>
@@ -238,15 +245,14 @@
             <div class="space-y-3">
                 <div class="relative group">
                     <input type="text" id="food-search" placeholder="Cari: Nasi, Ayam..." class="w-full pl-4 pr-24 py-3 rounded-2xl bg-white border border-slate-200 outline-none text-sm shadow-sm">
-                    <button onclick="searchWithAI()" id="ai-btn" class="absolute right-1 top-1 bottom-1 bg-slate-800 text-white px-3 rounded-xl text-xs font-bold flex items-center gap-1">
+                    <button onclick="searchWithAI()" id="ai-btn" class="absolute right-1 top-1 bottom-1 bg-slate-800 text-white px-3 rounded-xl text-xs font-bold flex items-center gap-1 hover:bg-slate-700 transition">
                         <i class="fas fa-magic text-brand-300"></i> Cari AI
                     </button>
                 </div>
-                <div id="ai-loading" class="hidden text-xs text-brand-600 ml-2"><div class="loader inline-block w-3 h-3 mr-1"></div> Mencari...</div>
+                <div id="ai-loading" class="hidden text-xs text-brand-600 ml-2 animate-pulse"><div class="loader inline-block w-3 h-3 mr-1"></div> Mencari estimasi kalori...</div>
                 
                 <button onclick="document.getElementById('manual-form').classList.toggle('hidden')" class="text-xs text-brand-600 font-bold underline ml-2">Input Manual</button>
                 
-                <!-- FIX INPUT MANUAL (LEBIH LEGA & RAPI) -->
                 <div id="manual-form" class="hidden bg-white p-4 rounded-xl border border-slate-100 shadow-sm animate-fade-in-down">
                     <h4 class="text-[10px] font-bold text-slate-400 uppercase mb-2">Tambah Makanan Sendiri</h4>
                     <div class="space-y-3">
@@ -267,7 +273,7 @@
         </section>
 
 
-        <!-- ================= 4. PROGRESS ================= -->
+        <!-- ================= 4. PROGRESS (WITH NEW BODY MEASUREMENT) ================= -->
         <section id="progress-section" class="app-section space-y-6">
             <div class="glass-card p-5 bg-white">
                 <h2 class="font-bold text-lg mb-4 flex items-center gap-2">
@@ -315,6 +321,26 @@
                 </div>
             </div>
 
+            <!-- NEW FEATURE: BODY MEASUREMENTS -->
+            <div class="glass-card p-5 bg-cyan-50 border border-cyan-100 relative">
+                <i class="fas fa-ruler-combined absolute top-4 right-4 text-cyan-200 text-4xl opacity-50"></i>
+                <h3 class="font-bold text-cyan-800 mb-4 flex items-center gap-2 relative z-10"><i class="fas fa-child"></i> Ukur Lingkar Otot</h3>
+                <p class="text-xs text-cyan-600 mb-3">BB bukan segalanya. Ukur progress ototmu!</p>
+                
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Lengan (cm)</label>
+                        <input type="number" id="measure-arm" class="w-full p-2 rounded-lg border border-cyan-200 bg-white text-sm" placeholder="cth: 30">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold text-slate-400 uppercase">Dada (cm)</label>
+                        <input type="number" id="measure-chest" class="w-full p-2 rounded-lg border border-cyan-200 bg-white text-sm" placeholder="cth: 95">
+                    </div>
+                </div>
+                <button onclick="saveMeasurements()" class="w-full bg-cyan-600 text-white py-2 rounded-lg font-bold text-xs hover:bg-cyan-700 transition">Simpan Ukuran</button>
+                <div id="measure-history" class="mt-3 space-y-1"></div>
+            </div>
+
             <div class="glass-card p-5 bg-white">
                 <h3 class="font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fas fa-chart-line text-brand-500"></i> Grafik BB</h3>
                 <div class="flex gap-2 mb-3">
@@ -326,25 +352,86 @@
             </div>
         </section>
 
+        <!-- ================= 5. SETTINGS & SLEEP TRACKER ================= -->
+        <section id="settings-section" class="app-section space-y-6">
+            
+            <div class="glass-card p-5 bg-indigo-50 border border-indigo-100 relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 text-8xl text-indigo-100 opacity-50"><i class="fas fa-moon rotate-12"></i></div>
+                <div class="relative z-10">
+                    <h2 class="font-bold text-indigo-900 text-lg mb-1">Pantau Tidur</h2>
+                    <p class="text-xs text-indigo-600 mb-4">Ingat prinsip: "Tidur = Tumbuh". Target: 8 Jam.</p>
+                    
+                    <div class="bg-white p-4 rounded-xl border border-indigo-100 shadow-sm mb-4">
+                        <label class="text-[10px] font-bold text-slate-400 uppercase mb-2 block">Tidur Tadi Malam (Jam)</label>
+                        <div class="flex flex-col gap-3">
+                            <input id="sleep-hours" type="number" placeholder="cth: 7.5" class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-lg font-bold focus:bg-white outline-none text-center">
+                            <button onclick="saveSleep()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold shadow-lg hover:bg-indigo-700 transition">Simpan</button>
+                        </div>
+                    </div>
+
+                    <div id="sleep-history" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <div class="glass-card p-5 bg-yellow-50 border border-yellow-100">
+                <h2 class="font-bold text-yellow-800 text-lg mb-2 flex items-center gap-2"><i class="fas fa-bolt text-yellow-500"></i> Baterai Energi</h2>
+                <p class="text-xs text-slate-600 mb-3">Seberapa bertenaga kamu hari ini?</p>
+                <div class="flex gap-2">
+                    <button onclick="setEnergy('low')" class="flex-1 py-3 rounded-xl border border-red-200 bg-red-50 text-red-600 font-bold text-xs hover:bg-red-100 transition energy-btn" id="en-low">Lemah</button>
+                    <button onclick="setEnergy('mid')" class="flex-1 py-3 rounded-xl border border-yellow-200 bg-yellow-50 text-yellow-600 font-bold text-xs hover:bg-yellow-100 transition energy-btn" id="en-mid">Sedang</button>
+                    <button onclick="setEnergy('high')" class="flex-1 py-3 rounded-xl border border-green-200 bg-green-50 text-green-600 font-bold text-xs hover:bg-green-100 transition energy-btn" id="en-high">Full</button>
+                </div>
+                <div id="energy-msg" class="mt-3 text-xs font-bold text-center text-slate-500 italic hidden"></div>
+            </div>
+
+            <div class="glass-card p-5 bg-white border-red-100">
+                <h3 class="font-bold text-slate-800 mb-4 text-sm flex items-center gap-2"><i class="fas fa-cog text-slate-400"></i> Pengaturan Aplikasi</h3>
+                
+                <div class="space-y-3">
+                    <button onclick="resetData('workouts')" class="w-full p-3 text-left bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-600 border border-slate-200 transition flex justify-between">
+                        <span>Hapus Custom Workout</span> <i class="fas fa-trash text-slate-300"></i>
+                    </button>
+                    <button onclick="resetData('all')" class="w-full p-3 text-left bg-red-50 hover:bg-red-100 rounded-xl text-xs font-bold text-red-600 border border-red-200 transition flex justify-between">
+                        <span>Reset Semua Data (Mulai Ulang)</span> <i class="fas fa-exclamation-triangle"></i>
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-4 text-center">EctoGuide V17 - Build for Hardgainers</p>
+            </div>
+        </section>
+
     </main>
 
-    <!-- BOTTOM NAV -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-up px-4 py-2 z-50 md:max-w-md md:mx-auto">
-        <div class="flex justify-between items-center">
-            <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center justify-center w-16 p-1 text-slate-400">
-                <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">Jadwal</span>
-            </button>
-            <button onclick="switchTab('workout')" class="nav-btn flex flex-col items-center justify-center w-16 p-1 text-slate-400">
-                <i class="fas fa-dumbbell text-xl mb-1"></i><span class="text-[10px] font-bold">Latihan</span>
-            </button>
-            <div class="relative -top-6">
-                <button onclick="switchTab('food')" class="nav-btn flex items-center justify-center w-14 h-14 bg-brand-600 text-white rounded-full shadow-lg border-4 border-white transform active:scale-95 transition">
+    <!-- BOTTOM NAV: FIXED CENTERED BUTTON -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-up h-16 z-50 md:max-w-md md:mx-auto">
+        <div class="relative flex justify-between items-center h-full px-6">
+            
+            <!-- Left Side -->
+            <div class="flex gap-8">
+                <button onclick="switchTab('home')" class="nav-btn active flex flex-col items-center justify-center w-10 cursor-pointer">
+                    <i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-bold">Home</span>
+                </button>
+                <button onclick="switchTab('workout')" class="nav-btn flex flex-col items-center justify-center w-10 cursor-pointer">
+                    <i class="fas fa-dumbbell text-xl mb-1"></i><span class="text-[10px] font-bold">Gym</span>
+                </button>
+            </div>
+
+            <!-- Absolute Center Button -->
+            <div class="absolute left-1/2 transform -translate-x-1/2 -top-6">
+                <button onclick="switchTab('food')" class="nav-btn flex items-center justify-center w-14 h-14 bg-brand-600 text-white rounded-full shadow-lg border-4 border-white transition transform active:scale-95 shadow-orange-500/30 cursor-pointer">
                     <i class="fas fa-utensils text-xl"></i>
                 </button>
             </div>
-            <button onclick="switchTab('progress')" class="nav-btn flex flex-col items-center justify-center w-16 p-1 text-slate-400">
-                <i class="fas fa-user-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Profil</span>
-            </button>
+
+            <!-- Right Side -->
+            <div class="flex gap-8">
+                <button onclick="switchTab('progress')" class="nav-btn flex flex-col items-center justify-center w-10 cursor-pointer">
+                    <i class="fas fa-user-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Profil</span>
+                </button>
+                <!-- FIXED SET BUTTON: Logic Fixed -->
+                <button onclick="switchTab('settings')" class="nav-btn flex flex-col items-center justify-center w-10 cursor-pointer">
+                     <i class="fas fa-cog text-xl mb-1"></i><span class="text-[10px] font-bold">Set</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -353,18 +440,25 @@
 
     <!-- LOGIC JS -->
     <script>
-        // === NAVIGASI ===
+        // === NAVIGASI (FIXED LOGIC) ===
         function switchTab(tabName) {
             document.querySelectorAll('.app-section').forEach(sec => sec.classList.remove('active-section'));
             document.getElementById(`${tabName}-section`).classList.add('active-section');
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            const map = {'home':0, 'workout':1, 'food':2, 'progress':3};
+            
             const btns = document.querySelectorAll('.nav-btn');
-            if(tabName !== 'food') btns[map[tabName] > 1 ? map[tabName] : map[tabName]].classList.add('active');
+            btns.forEach(btn => btn.classList.remove('active'));
+
+            // Indexing: 0=Home, 1=Gym, 2=Food(Middle), 3=Profil, 4=Set
+            if (tabName === 'home') btns[0].classList.add('active');
+            if (tabName === 'workout') btns[1].classList.add('active');
+            if (tabName === 'food') btns[2].classList.add('active');
+            if (tabName === 'progress') btns[3].classList.add('active');
+            if (tabName === 'settings') btns[4].classList.add('active'); 
+            
             window.scrollTo(0,0);
         }
 
-        // === STREAK COUNTER (NEW) ===
+        // === STREAK COUNTER ===
         function checkStreak() {
             const today = new Date().toDateString();
             let lastLogin = localStorage.getItem('lastLogin');
@@ -376,7 +470,7 @@
                 if (lastLogin === yesterday.toDateString()) {
                     streak++;
                 } else {
-                    streak = 1; // Reset if broken
+                    streak = 1;
                 }
                 localStorage.setItem('lastLogin', today);
                 localStorage.setItem('streakCount', streak);
@@ -384,7 +478,22 @@
             document.getElementById('streak-count').innerText = streak;
         }
 
-        // === 1. JADWAL (LAMA) ===
+        // === 1RM CALCULATOR ===
+        function calculateOneRM() {
+            const weight = parseFloat(document.getElementById('rm-weight').value);
+            const reps = parseFloat(document.getElementById('rm-reps').value);
+            
+            if (weight && reps) {
+                const oneRM = weight * (36 / (37 - reps));
+                document.getElementById('rm-value').innerText = Math.round(oneRM) + " kg";
+                document.getElementById('rm-result-area').classList.remove('hidden');
+                showToast(`Kekuatan Maksimal: ${Math.round(oneRM)} kg`);
+            } else {
+                showToast("Isi beban dan repetisi!", true);
+            }
+        }
+
+        // === JADWAL ===
         const scheduleData = {
             'Sen': { act: 'Latihan A (Atas)', desc: 'Fokus intensitas tinggi.', color: '#ea580c' },
             'Sel': { act: 'Istirahat Total', desc: 'Waktunya otot tumbuh.', color: '#22c55e' },
@@ -409,7 +518,7 @@
             document.getElementById('day-title').innerText = day; document.getElementById('day-activity').innerText = data.act; document.getElementById('day-desc').innerText = data.desc;
         }
 
-        // === 2. LATIHAN (TIMER + CUSTOM) ===
+        // === LATIHAN ===
         let timerInterval;
         function startTimer(seconds) {
             clearInterval(timerInterval);
@@ -460,8 +569,9 @@
         }
         function deleteCustom(idx) { if(confirm('Hapus gerakan ini?')) { customPlan.splice(idx, 1); localStorage.setItem('customWorkouts', JSON.stringify(customPlan)); renderWorkout('D'); } }
 
-        // === 3. MAKANAN & AIR ===
-        const apiKey = "AIzaSyB6hsL1-JMOZLgxDwlASaVGFc8EOmKVVnE";
+        // === MAKANAN & AIR ===
+        const apiKey = ""; 
+
         const localFoodDB = [{ name: 'Nasi Putih', cal: 204 }, { name: 'Telur Rebus', cal: 78 }, { name: 'Dada Ayam', cal: 165 }, { name: 'Mie Instan', cal: 380 }];
         let plate = JSON.parse(localStorage.getItem('plate')) || [];
         let targetCal = localStorage.getItem('targetCal') || 2500;
@@ -470,14 +580,42 @@
         async function searchWithAI() {
             const query = document.getElementById('food-search').value;
             if(!query) return showToast("Ketik nama makanan!", true);
+            
             document.getElementById('ai-loading').classList.remove('hidden');
+            document.getElementById('ai-btn').disabled = true;
+
             try {
-                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ contents: [{ parts: [{ text: `Estimasi kalori "${query}" JSON format: {"name": "Nama", "cal": 123}` }] }] }) });
+                const payload = { 
+                    contents: [{ 
+                        parts: [{ 
+                            text: `Estimasi kalori untuk "${query}". Return ONLY JSON format: {"name": "FoodName", "cal": 123}. No markdown formatting, no explanation, just the raw JSON object.` 
+                        }] 
+                    }] 
+                };
+
+                const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify(payload) 
+                });
+
+                if (!res.ok) throw new Error("API Error");
+
                 const data = await res.json();
-                const result = JSON.parse(data.candidates[0].content.parts[0].text.replace(/```json|```/g, '').trim());
-                localFoodDB.unshift(result); renderFoodList(); showToast(`Ditemukan: ${result.name}`);
-            } catch(e) { showToast("Gagal. Coba manual.", true); }
-            document.getElementById('ai-loading').classList.add('hidden');
+                const textResponse = data.candidates[0].content.parts[0].text;
+                const cleanJson = textResponse.replace(/```json|```/g, '').trim();
+                const result = JSON.parse(cleanJson);
+
+                localFoodDB.unshift(result); 
+                renderFoodList(); 
+                showToast(`Ditemukan: ${result.name} (${result.cal} kkal)`);
+            } catch(e) { 
+                console.error(e);
+                showToast("Gagal koneksi ke AI. Coba lagi.", true); 
+            } finally {
+                document.getElementById('ai-loading').classList.add('hidden');
+                document.getElementById('ai-btn').disabled = false;
+            }
         }
 
         function renderFoodList() { const l = document.getElementById('food-list'); l.innerHTML = ''; localFoodDB.forEach(i => l.innerHTML += `<div onclick="addToPlate('${i.name}',${i.cal})" class="flex justify-between p-2 bg-white border border-slate-100 rounded-lg mb-2 cursor-pointer hover:border-brand-500"><span class="text-xs font-bold text-slate-700">${i.name}</span><span class="text-xs font-bold text-brand-600">${i.cal}</span></div>`); }
@@ -485,7 +623,6 @@
         function removeFromPlate(id){ plate = plate.filter(p=>p.id!==id); updatePlate(); }
         function resetPlate(){ if(confirm("Reset?")){ plate=[]; updatePlate(); } }
         
-        // FIX INPUT MANUAL LOGIC
         function addManual(){ 
             const n = document.getElementById('man-name').value;
             const c = parseInt(document.getElementById('man-cal').value); 
@@ -515,7 +652,7 @@
             showToast("+1 Gelas Air");
         }
 
-        // === 4. KALKULATOR & GRAFIK ===
+        // === PROGRESS & MEASUREMENTS ===
         function calculateTarget() {
             const bb = parseFloat(document.getElementById('bb').value);
             const tb = parseFloat(document.getElementById('tb').value);
@@ -545,6 +682,87 @@
             if(d&&w){ chart.data.labels.push(d); chart.data.datasets[0].data.push(w); chart.update(); localStorage.setItem('wLabels',JSON.stringify(chart.data.labels)); localStorage.setItem('wData',JSON.stringify(chart.data.datasets[0].data)); document.getElementById('dash-weight').innerText=w; showToast("BB Disimpan!"); }
         }
 
+        // New Feature: Measurements
+        let measurements = JSON.parse(localStorage.getItem('measurements')) || [];
+        function saveMeasurements() {
+            const arm = document.getElementById('measure-arm').value;
+            const chest = document.getElementById('measure-chest').value;
+            if(arm || chest) {
+                measurements.unshift({ date: new Date().toLocaleDateString('id-ID'), arm: arm || '-', chest: chest || '-' });
+                if(measurements.length > 3) measurements.pop();
+                localStorage.setItem('measurements', JSON.stringify(measurements));
+                renderMeasurements();
+                showToast("Ukuran disimpan!");
+            } else { showToast("Isi minimal satu!", true); }
+        }
+        function renderMeasurements() {
+            const c = document.getElementById('measure-history'); c.innerHTML='';
+            measurements.forEach(m => c.innerHTML += `<div class="flex justify-between text-[10px] text-slate-500 border-b border-slate-100 pb-1"><span>${m.date}</span><span>Lengan: <b>${m.arm}</b> | Dada: <b>${m.chest}</b></span></div>`);
+        }
+
+        // === SLEEP & SETTINGS ===
+        let sleepHistory = JSON.parse(localStorage.getItem('sleepHistory')) || [];
+
+        function saveSleep() {
+            const hours = document.getElementById('sleep-hours').value;
+            if(hours) {
+                const date = new Date().toLocaleDateString('id-ID', {day: 'numeric', month: 'short'});
+                sleepHistory.unshift({ date: date, hours: hours });
+                if(sleepHistory.length > 5) sleepHistory.pop(); 
+                localStorage.setItem('sleepHistory', JSON.stringify(sleepHistory));
+                renderSleepHistory();
+                showToast("Data tidur disimpan!");
+            } else {
+                showToast("Isi jam tidur!", true);
+            }
+        }
+
+        function renderSleepHistory() {
+            const container = document.getElementById('sleep-history');
+            container.innerHTML = '';
+            sleepHistory.forEach(s => {
+                const color = s.hours >= 7 ? 'text-green-600' : 'text-orange-500';
+                container.innerHTML += `<div class="flex justify-between items-center text-xs p-2 bg-indigo-50/50 rounded-lg border border-indigo-100"><span>${s.date}</span><span class="font-bold ${color}">${s.hours} Jam</span></div>`;
+            });
+        }
+        
+        // ENERGY BATTERY
+        function setEnergy(level) {
+            document.querySelectorAll('.energy-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-slate-300'));
+            const msg = document.getElementById('energy-msg');
+            msg.classList.remove('hidden');
+            
+            if(level === 'low') {
+                document.getElementById('en-low').classList.add('ring-2', 'ring-offset-2', 'ring-red-200');
+                msg.innerHTML = "Saran: Kurangi beban 20% hari ini, fokus teknik.";
+                msg.className = "mt-3 text-xs font-bold text-center text-red-500 italic";
+            } else if (level === 'mid') {
+                document.getElementById('en-mid').classList.add('ring-2', 'ring-offset-2', 'ring-yellow-200');
+                msg.innerHTML = "Saran: Latihan normal, istirahat antar set diperlama.";
+                msg.className = "mt-3 text-xs font-bold text-center text-yellow-600 italic";
+            } else {
+                document.getElementById('en-high').classList.add('ring-2', 'ring-offset-2', 'ring-green-200');
+                msg.innerHTML = "Saran: Gaspol! Coba naikan beban (PR) hari ini.";
+                msg.className = "mt-3 text-xs font-bold text-center text-green-600 italic";
+            }
+        }
+
+        function resetData(type) {
+            if(type === 'workouts') {
+                if(confirm('Hapus semua Custom Workout?')) {
+                    localStorage.removeItem('customWorkouts');
+                    customPlan = [];
+                    renderWorkout('D');
+                    showToast("Custom Workout dihapus.");
+                }
+            } else if (type === 'all') {
+                if(confirm('YAKIN HAPUS SEMUA DATA? Aplikasi akan kembali seperti baru.')) {
+                    localStorage.clear();
+                    location.reload();
+                }
+            }
+        }
+
         function showToast(msg, isError = false) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -555,10 +773,12 @@
         }
 
         window.onload = function() {
-            checkStreak(); // Load Streak
+            checkStreak(); 
             initSchedule(); renderFoodList(); renderWorkout('A'); updatePlate(); initChart();
+            renderMeasurements();
             document.getElementById('chart-date').valueAsDate = new Date();
             document.getElementById('water-count').innerText = waterCount;
+            renderSleepHistory(); 
             switchTab('home');
         };
     </script>
